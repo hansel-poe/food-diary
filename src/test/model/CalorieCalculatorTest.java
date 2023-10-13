@@ -62,6 +62,7 @@ public class CalorieCalculatorTest {
 
         jess.setActivityLevel(5); // extra active
         assertEquals(2550, cc.calculatetdEE(jess, 1342));
+
     }
 
     @Test
@@ -76,6 +77,11 @@ public class CalorieCalculatorTest {
 
         jess.setDietPlan(3);
         assertEquals(610, cc.calculateCalorieAllowance(jess));
+
+        jonny.setActivityLevel(1);
+        jonny.setDietPlan(1);
+
+        assertEquals(1856, cc.calculateCalorieAllowance(jonny));
     }
 
 
