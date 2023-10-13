@@ -60,8 +60,9 @@ public class Day {
 
 
     //Modifies : this
-    //Effects: removes food with the name name in the order they are added, if no food with name is found, nothing happens.
-    //Updates total calories
+    //Effects: removes food with the name name in the order they are added,
+    // if no food with name is found, nothing happens. Updates total calories
+
     public void removeFood(String name) {
         for (Food food : foods) {
             if (food.getName() == name) {
