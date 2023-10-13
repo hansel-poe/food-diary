@@ -23,10 +23,9 @@ public class Person {
     private boolean sex; //corresponds to sex specified above
 
     private int activityLevel; // ranges from 1 to 5, each corresponds to a particular activity level factor
-    private float kgsLostPeselecrWeek; //the rate of weight loss, can be one of 0.25kg, 0.5kg or 1 kg
 
     private int calorieAllowance; //Daily calorie allowance for weight loss // attained from calorieCalculator class
-    private int weightGoal; // this is the targeted weight
+    private int weightGoal; // this is the targeted weight ,used to calculate how long it takes to reach this goal
 
     public Person() {
         name = "";
@@ -146,7 +145,7 @@ public class Person {
         this.sex = sex;
     }
 
-    public void setCalorieAllowance() {
+    public void setCalorieAllowance(int calorieAllowance) {
         this.calorieAllowance = calorieAllowance;
     }
 

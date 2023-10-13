@@ -83,8 +83,6 @@ public class CalorieCalculatorTest {
 
         assertEquals(1856, cc.calculateCalorieAllowance(jonny));
     }
-
-
 }
 
 
