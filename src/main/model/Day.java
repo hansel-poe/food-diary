@@ -128,5 +128,32 @@ public class Day {
         this.caloriesAllowed = caloriesAllowed;
     }
 
+    //Effects: prints food lists
+    public String toString() {
+        String message = null;
+        message = "Date: " + date + "\n";
+
+        message += getMeals("Breakfast");
+        message += getMeals("Lunch");
+        message += getMeals("Dinner");
+        message += getMeals("Snack");
+
+        return message;
+    }
+
+
+    private String getMeals(String mealType) {
+        String list;
+
+        list = mealType + "\n";
+
+        for (Food food : foods) {
+            if (food.getMealType() == mealType) {
+                list = list + food.toString() + "\n";
+            }
+        }
+        return list;
+    }
+
 }
 

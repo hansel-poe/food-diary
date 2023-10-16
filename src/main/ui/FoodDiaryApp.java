@@ -39,19 +39,25 @@ public class FoodDiaryApp {
             option = input.nextInt();
             input.nextLine();
 
-            if (option == 1) {
-                addEntry();
-            } else if (option == 2) {
-                printEntry();
-            } else if (option == 3) {
-                printProfile();
-            } else if (option == 4) {
+            if (option == 4) {
                 runs = false;
-            } else {
-                System.out.println("Invalid input, Please try again.");
             }
+
+            processOption(option);
         }
         System.out.println("Thanks for using FoodDiary :)");
+    }
+
+    private void processOption(int option) {
+        if (option == 1) {
+            addEntry();
+        } else if (option == 2) {
+            printEntry();
+        } else if (option == 3) {
+            printProfile();
+        } else {
+            System.out.println("Invalid input, Please try again.");
+        }
     }
 
 
@@ -77,14 +83,11 @@ public class FoodDiaryApp {
         System.out.println("Your entry : ");
 
         for (Day day : days) {
-            System.out.println("Date: " + day.getDate());
+            System.out.println(day.toString());
+            System.out.println("\n");
 
-            List<Food> foods = day.getFoods();
-            for (Food food : foods) {
-                System.out.println(food);
-            }
             System.out.println("The total calories for the day: " + day.getTotalCalories());
-            System.out.println("Calories allowed for this day: ");
+            System.out.println("Calories allowed for this day: " + day.getCaloriesAllowed());
             System.out.println("Calories Left: " + day.getCaloriesLeft());
         }
     }
@@ -96,9 +99,7 @@ public class FoodDiaryApp {
         System.out.println("Please enter a date: ");
 
         userInput = input.nextLine();
-
         Day day = new Day(userInput, user.getWeight(), user.getCalorieAllowance());
-
         System.out.println("You are logging for: " + userInput);
 
         while (logging) {
@@ -113,8 +114,9 @@ public class FoodDiaryApp {
             calories = input.nextInt();
             input.nextLine();
 
-            System.out.println(" What type of meal is this? Breakfast, Lunch, Dinner, or Snack");
+            System.out.println(" What type of meal is this? 1. Breakfast, 2. Lunch, 3. Dinner,or 4. Snack");
             foodType = input.nextLine();
+
             System.out.println("Enter some notes: ");
             notes = input.nextLine();
 
@@ -232,7 +234,8 @@ public class FoodDiaryApp {
         updateCalorieAllowance();
 
         System.out.println("Your daily calorie allowance is : " + user.getCalorieAllowance());
-        System.out.println("Based on your diet plan, you will reach your weight goal in: " + user.getGoalLength() + " days");
+        System.out.println("Based on your diet plan, you will reach your weight goal in: "
+                + user.getGoalLength() + " days");
         System.out.println("Setup complete! please log regularly to monitor your progress.");
     }
 
