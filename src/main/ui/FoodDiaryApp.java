@@ -4,6 +4,10 @@ import model.CalorieCalculator;
 import model.Day;
 import model.Food;
 import model.Person;
+import model.exceptions.InvalidActivityLevelException;
+import model.exceptions.InvalidDietPlanException;
+import model.exceptions.InvalidMealTypeException;
+import model.exceptions.InvalidSexException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,9 +45,9 @@ public class FoodDiaryApp {
 
             if (option == 4) {
                 runs = false;
+            } else {
+                processOption(option);
             }
-
-            processOption(option);
         }
         System.out.println("Thanks for using FoodDiary :)");
     }
@@ -59,7 +63,6 @@ public class FoodDiaryApp {
             System.out.println("Invalid input, Please try again.");
         }
     }
-
 
     private static void displayMenu() {
         System.out.println("Please select an option: ");
@@ -80,21 +83,71 @@ public class FoodDiaryApp {
     }
 
     private void printEntry() {
-        System.out.println("Your entry : ");
+        System.out.println("Your entries : ");
 
         for (Day day : days) {
-            System.out.println(day.toString());
-            System.out.println("\n");
+            System.out.println(day.getDate());
+
+            printBreakfast(day);
+
+            printLunch(day);
+            printDinner(day);
+            printSnack(day);
 
             System.out.println("The total calories for the day: " + day.getTotalCalories());
             System.out.println("Calories allowed for this day: " + day.getCaloriesAllowed());
-            System.out.println("Calories Left: " + day.getCaloriesLeft());
+            System.out.println("Calories Left: " + day.getCaloriesLeft() + "\n");
+        }
+    }
+
+    private void printBreakfast(Day day) {
+        System.out.println("Breakfast:");
+        Food food;
+        for (int i = 0; i < day.getNumFoods(); i++) {
+            food = day.getFood(i);
+            if ((food.getMealType()).equals("Breakfast")) {
+                System.out.println(food.toString());
+            }
+        }
+    }
+
+    private void printLunch(Day day) {
+        System.out.println("Lunch:");
+        Food food;
+        for (int i = 0; i < day.getNumFoods(); i++) {
+            food = day.getFood(i);
+            if (food.getMealType().equals("Lunch")) {
+                System.out.println(food.toString());
+            }
+        }
+    }
+
+    private void printDinner(Day day) {
+        System.out.println("Dinner:");
+        Food food;
+        for (int i = 0; i < day.getNumFoods(); i++) {
+            food = day.getFood(i);
+            if (food.getMealType().equals("Dinner")) {
+                System.out.println(food.toString());
+            }
+        }
+    }
+
+    private void printSnack(Day day) {
+        System.out.println("Snack:");
+        Food food;
+        for (int i = 0; i < day.getNumFoods(); i++) {
+            food = day.getFood(i);
+            if (food.getMealType().equals("Snack")) {
+                System.out.println(food.toString());
+            }
         }
     }
 
     private void addEntry() {
         boolean logging = true;
         String userInput = null;
+        int option;
 
         System.out.println("Please enter a date: ");
 
@@ -103,34 +156,45 @@ public class FoodDiaryApp {
         System.out.println("You are logging for: " + userInput);
 
         while (logging) {
-            String foodName;
-            int calories;
-            String foodType;
-            String notes;
+            logFood(day);
 
-            System.out.println("Please enter the name of food: ");
-            foodName = input.nextLine();
-            System.out.println("Please enter the calories for this food: ");
-            calories = input.nextInt();
-            input.nextLine();
-
-            System.out.println(" What type of meal is this? 1. Breakfast, 2. Lunch, 3. Dinner,or 4. Snack");
-            foodType = input.nextLine();
-
-            System.out.println("Enter some notes: ");
-            notes = input.nextLine();
-
-            day.addFood(foodName, calories, foodType, notes);
-
-            System.out.println("select 1 to quit, 2 to continue logging");
-            int option = input.nextInt();
+            System.out.println("select 1 to quit, any other key to continue logging");
+            option = input.nextInt();
             input.nextLine();
 
             if (option == 1) {
-                logging = false;
+                break;
             }
         }
         days.add(day);
+    }
+
+    private void logFood(Day day) {
+        String foodName;
+        int calories;
+        String foodType;
+        String notes;
+
+        System.out.println("Please enter the name of food: ");
+        foodName = input.nextLine();
+
+        System.out.println("Please enter the calories for this food: ");
+        calories = input.nextInt();
+        input.nextLine();
+
+        System.out.println(" What type of meal is this? 1. Breakfast, 2.Lunch, 3.Dinner, 4.Snack");
+        foodType = input.nextLine();
+
+        System.out.println("Enter some notes: ");
+        notes = input.nextLine();
+
+        Food food = null;
+        try {
+            food = new Food(foodName, calories, foodType, notes);
+            day.addFood(food);
+        } catch (InvalidMealTypeException e) {
+            System.out.println("Food type is not valid, please try again");
+        }
     }
 
     private void init() {
@@ -157,13 +221,17 @@ public class FoodDiaryApp {
 
         int userInfo = input.nextInt();
 
-        if (userInfo == 1) {
-            user.setSex(true);
-        } else if (userInfo == 2) {
-            user.setSex(false);
-        } else {
-            System.out.println("Error: Invalid option");
-            exit(1);
+        try {
+            if (userInfo == 1) {
+                user.setSex("Male");
+            } else if (userInfo == 2) {
+                user.setSex("Female");
+            } else {
+                System.out.println("Error: Invalid option");
+                exit(1);
+            }
+        } catch (InvalidSexException e) {
+            System.out.println(e.getMessage());
         }
 
         System.out.println("Please enter your age: ");
@@ -217,7 +285,11 @@ public class FoodDiaryApp {
             exit(1);
         }
 
-        user.setActivityLevel(userInfo);
+        try {
+            user.setActivityLevel(userInfo);
+        } catch (InvalidActivityLevelException e) {
+            System.out.println(e.getMessage());
+        }
 
         System.out.println("Choose one of the diet plans below below: ");
         System.out.println("1. Lose 0.25 Kg per week");
@@ -229,7 +301,12 @@ public class FoodDiaryApp {
             System.out.println("Error: Invalid input");
             exit(1);
         }
-        user.setDietPlan(userInfo);
+
+        try {
+            user.setDietPlan(userInfo);
+        } catch (InvalidDietPlanException e) {
+            System.out.println(e.getMessage());
+        }
 
         updateCalorieAllowance();
 
@@ -243,5 +320,5 @@ public class FoodDiaryApp {
         user.setCalorieAllowance(cc.calculateCalorieAllowance(user));
     }
 
-
 }
+

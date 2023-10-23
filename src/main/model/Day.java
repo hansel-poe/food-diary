@@ -3,28 +3,32 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
-//A class representing a day entry containing a list of Foods eaten that day
+//A class representing a day entry containing a list of Foods eaten that day,
+// each day entry also records the weight of the user and calories allowed at the time
+// the entry is created. It also keeps track of the  total calories consumed for the day
 public class Day {
 
     //Fields
     private List<Food> foods; //represents a List of Food items
-    private int totalCalories; //totalcalories consumed for the day;
-
     private String date; //represents the name of the day
+
     private int caloriesAllowed; //total Calories allowed for this day
+    private int totalCalories; //total calories consumed for the day so far;
     private int weight; //weight for this particular day
 
     //Default constructor
+    //Effects : constructs a day entry with empty date, 0 weight,
+    // 0 calories allowed,0 total calories, and empty list of food
     public Day() {
         this.date = "";
         this.weight = 0;
         this.caloriesAllowed = 0;
-        totalCalories = 0;
-        foods = new ArrayList<>();
+        this.totalCalories = 0;
+        this.foods = new ArrayList<>();
     }
 
     //Effects: creates a Day entry with weight set to weight and calories Allowed set to
-    // caloriesAllowed, totalcalories = 0, and empty food List
+    // caloriesAllowed, total calories = 0, and empty food List
     public Day(String date, int weight, int caloriesAllowed) {
         this.date = date;
         this.weight = weight;
@@ -34,35 +38,16 @@ public class Day {
         foods = new ArrayList<Food>();
     }
 
-    //Requires : name is not empty, calories > 0,and mealType is one of "Breakfast", "Snack", "Lunch", or "Dinner"
     //Modifies: this
     //Effects: adds a food item to the list of foods in the day, updates total calories
-    public void addFood(String name, int calories, String mealType, String notes) {
-        Food food;
-
-        if (mealType == "Breakfast") {
-            food = new Breakfast();
-        } else if (mealType == "Lunch") {
-            food = new Lunch();
-        } else if (mealType == "Dinner") {
-            food = new Dinner();
-        } else {
-            food = new Snack();
-        }
-
-        food.setName(name);
-        food.setCalories(calories);
-        food.setNotes(notes);
-
+    public void addFood(Food food) {
         foods.add(food);
         updateTotalCalories();
     }
 
-
     //Modifies : this
-    //Effects: removes food with the name name in the order they are added,
+    //Effects: removes food with the name in the order they are added,
     // if no food with name is found, nothing happens. Updates total calories
-
     public void removeFood(String name) {
         for (Food food : foods) {
             if (food.getName() == name) {
@@ -75,17 +60,14 @@ public class Day {
 
     //Modifies : this
     //Effects : adds up all total calories from food to get total calories
-    public void updateTotalCalories() {
-
-        totalCalories = 0; // resets to recalculate
-
+    private void updateTotalCalories() {
+        totalCalories = 0; // resets total calories
         for (Food food : foods) {
             totalCalories += food.getCalories();
         }
     }
 
     //getters
-
     public String getDate() {
         return date;
     }
@@ -102,17 +84,23 @@ public class Day {
         return caloriesAllowed;
     }
 
-    //Effects: returns amount calorie allowance left for the day
+    //Effects: returns amount calorie allowance left for the day, if total calories exceed the calories allowed, return 0
     public int getCaloriesLeft() {
-        if (caloriesAllowed - totalCalories > 0) {
-            return caloriesAllowed - totalCalories;
-        } else {
+        if (caloriesAllowed - totalCalories < 0) {
             return 0;
+        } else {
+            return (caloriesAllowed - totalCalories);
         }
     }
 
-    public List<Food> getFoods() {
-        return foods;
+    //Effects : returns the number of food items
+    public int getNumFoods() {
+        return foods.size();
+    }
+
+    //Effects: returns true if there is no food item
+    public boolean isEmpty() {
+        return foods.isEmpty();
     }
 
     //setters
@@ -128,32 +116,9 @@ public class Day {
         this.caloriesAllowed = caloriesAllowed;
     }
 
-    //Effects: prints food lists
-    public String toString() {
-        String message = null;
-        message = "Date: " + date + "\n";
-
-        message += getMeals("Breakfast");
-        message += getMeals("Lunch");
-        message += getMeals("Dinner");
-        message += getMeals("Snack");
-
-        return message;
+    //Returns Food at the position of index in the list
+    public Food getFood(int index) {
+        return foods.get(index);
     }
-
-
-    private String getMeals(String mealType) {
-        String list;
-
-        list = mealType + "\n";
-
-        for (Food food : foods) {
-            if (food.getMealType() == mealType) {
-                list = list + food.toString() + "\n";
-            }
-        }
-        return list;
-    }
-
 }
 
