@@ -1,6 +1,7 @@
 package model.persistence;
 
 import model.*;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -22,8 +23,8 @@ public class JsonReader {
     // throws IOException if an error occurs reading data from file
     public FoodDiary read() throws IOException {
         String jsonData = readFile(targetFile);
-        JSONObject jsonObject = new JSONObject(jsonData);
-        return parseFoodDiary(jsonObject);
+        JSONObject jsonDiary = new JSONObject(jsonData);
+        return parseFoodDiary(jsonDiary);
     }
 
     // EFFECTS: reads targetFile file as string and returns it
@@ -37,15 +38,52 @@ public class JsonReader {
         return fileContent.toString();
     }
 
-    private FoodDiary parseFoodDiary(JSONObject json) {
-        String name = json.getString("name");
-        Person user = parseUser(json);
-        return new FoodDiary(name,user);
+    private FoodDiary parseFoodDiary(JSONObject jsonDiary) {
+        String name = jsonDiary.getString("name");
+        Person user = parseUser(jsonDiary);
+        FoodDiary foodDiary = new FoodDiary(name, user);
+        addDays(foodDiary, jsonDiary);
+
+        return foodDiary;
     }
 
+    //Modifies: foodDiary
+    //Effects: extracts days from jsonDiary and adds them to foodDiary
+    private void addDays(FoodDiary foodDiary, JSONObject jsonDiary) {
+        JSONArray jsonDays = jsonDiary.getJSONArray("days");
+        for (Object jsonDay : jsonDays) {
+            JSONObject nextDay = (JSONObject) jsonDay;
+            addDay(foodDiary, nextDay);
+        }
+    }
 
-    private Person parseUser(JSONObject json) {
-        JSONObject user = json.getJSONObject("user");
+    //Modifies: foodDiary
+    //Effects: Extracts Day from jsonDay to foodDiary
+    private void addDay(FoodDiary foodDiary, JSONObject jsonDay) {
+        String date = jsonDay.getString("date");
+        int caloriesAllowed = jsonDay.getInt("calories allowed");
+        //int totalCalories = jsonDay.getInt("total calories"); // this is actually redundant
+        int weight = jsonDay.getInt("weight");
+
+        Day day = new Day(date, weight, caloriesAllowed);
+        addFoods(day, jsonDay);
+
+        foodDiary.addDay(day);
+    }
+
+    //Modifies: day
+    //effects: Extracts foods from jsonDay and add it to day
+    private void addFoods(Day day, JSONObject jsonDay) {
+        JSONArray jsonFoods = jsonDay.getJSONArray("foods");
+        for (Object jsonFood : jsonFoods) {
+            JSONObject nextFood = (JSONObject) jsonFood;
+            addFood(day, nextFood);
+        }
+    }
+
+    //Effects: Extracts the user information from json and returns it
+    private Person parseUser(JSONObject jsonDiary) {
+        JSONObject user = jsonDiary.getJSONObject("user");
         Person person = new Person();
         person.setName(user.getString("name"));
         person.setSex(Sex.valueOf(user.getString("sex")));
@@ -59,16 +97,16 @@ public class JsonReader {
         return person;
     }
 
-   /* //Modifies: day
+    //Modifies: day
     //Effects: retrieves each food item from json and add it to day)
-    private void addFood(Day day, JSONObject json) {
-        String name = json.getString("name");
-        int calories = json.getInt("calories");
-        MealType mealType = MealType.valueOf(json.getString("meal type"));
-        String notes = json.getString("notes");
+    private void addFood(Day day, JSONObject jsonFood) {
+        String name = jsonFood.getString("name");
+        int calories = jsonFood.getInt("calories");
+        MealType mealType = MealType.valueOf(jsonFood.getString("meal type"));
+        String notes = jsonFood.getString("notes");
 
         Food food = new Food(name, calories, mealType, notes);
         day.addFood(food);
-    }*/
+    }
 
 }

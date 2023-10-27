@@ -1,0 +1,56 @@
+{
+    "name": "Jess's Food Diary",
+    "days": [
+        {
+            "date": "Monday Oct 20th",
+            "foods": [
+                {
+                    "notes": "The apple is sweet",
+                    "name": "Apple",
+                    "calories": 50,
+                    "meal type": "BREAKFAST"
+                },
+                {
+                    "notes": "Grilled with salt",
+                    "name": "Chicken",
+                    "calories": 100,
+                    "meal type": "LUNCH"
+                }
+            ],
+            "weight": 60,
+            "calories allowed": 1000,
+            "total calories": 150
+        },
+        {
+            "date": "Tuesday Oct 21th",
+            "foods": [
+                {
+                    "notes": "Chocolate chip",
+                    "name": "Cookies",
+                    "calories": 120,
+                    "meal type": "SNACK"
+                },
+                {
+                    "notes": "Oatmeal",
+                    "name": "Cookies",
+                    "calories": 75,
+                    "meal type": "DINNER"
+                }
+            ],
+            "weight": 61,
+            "calories allowed": 1200,
+            "total calories": 195
+        }
+    ],
+    "user": {
+        "activity level": "SEDENTARY",
+        "diet plan": "PLAN2",
+        "sex": "FEMALE",
+        "calorie allowance": 1000,
+        "name": "Jess Kicks",
+        "weight": 59,
+        "weight goal": 54,
+        "age": 30,
+        "height": 170
+    }
+}
