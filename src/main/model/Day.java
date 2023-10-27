@@ -1,5 +1,9 @@
 package model;
 
+import model.persistence.Writable;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -7,7 +11,7 @@ import java.util.List;
 //A class representing a day entry containing a list of Foods eaten that day,
 // each day entry also records the weight of the user and calories allowed at the time
 // the entry is created. It also keeps track of the total calories consumed for the day
-public class Day {
+public class Day implements Writable {
 
     //Fields
     private List<Food> foods; //represents a List of Food items
@@ -122,6 +126,27 @@ public class Day {
 
     public void setCaloriesAllowed(int caloriesAllowed) {
         this.caloriesAllowed = caloriesAllowed;
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+
+        json.put("date", date);
+        json.put("weight", weight);
+        json.put("calories allowed", caloriesAllowed);
+        json.put("total calories", totalCalories);
+        json.put("foods", foodsToJson());
+
+        return json;
+    }
+
+    public JSONArray foodsToJson() {
+        JSONArray jsonArray = new JSONArray();
+        for (Food food : foods) {
+            jsonArray.put(food.toJson());
+        }
+        return jsonArray;
     }
 }
 

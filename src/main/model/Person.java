@@ -1,8 +1,11 @@
 package model;
 
+import model.persistence.Writable;
+import org.json.JSONObject;
+
 //stores profile info for user, containing personal health information
 // weight goal and other options specified by the user.
-public class Person {
+public class Person implements Writable {
 
     private String name;//name of person
     private Sex sex; //Determines the formula used to calculate bmr
@@ -165,6 +168,22 @@ public class Person {
     //Effects : sets the diet plan
     public void setDietPlan(DietPlan choice) {
         this.dietPlan = choice;
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", name);
+        json.put("sex", sex);
+        json.put("age", age);
+        json.put("weight", weight);
+        json.put("height", height);
+        json.put("calorie allowance", calorieAllowance);
+        json.put("weight goal", weightGoal);
+        json.put("activity level", activityLevel);
+        json.put("diet plan", dietPlan);
+
+        return json;
     }
 }
 

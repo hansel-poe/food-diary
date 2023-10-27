@@ -10,17 +10,11 @@ import java.util.Scanner;
 public class FoodDiaryApp {
 
     //Declaring fields
-    private List<Day> days;
-    private Person user;
-    private CalorieCalculator cc;
+    private FoodDiary foodDiary;
     private Scanner input;
 
     //Effects: Initializes variables and runs the FoodDiary app
     public FoodDiaryApp() {
-        days = new ArrayList<Day>();
-        user = new Person();
-        cc = new CalorieCalculator();
-
         input = new Scanner(System.in);
         input.useDelimiter("\n");
 
@@ -38,7 +32,9 @@ public class FoodDiaryApp {
 
             String option = null;
             option = readString();
+
             option = option.toLowerCase();
+            option = option.trim();
 
             if (option.equals("q")) {
                 runs = false;
@@ -69,7 +65,9 @@ public class FoodDiaryApp {
         System.out.println("\tq -> Quit app");
     }
 
+    //Effects: prints the user profile
     private void printProfile() {
+        Person user = foodDiary.getUser();
         System.out.println("Name: " + user.getName());
         System.out.println("Sex: " + user.getSex());
         System.out.println("Age: " + user.getAge() + " years");
@@ -83,10 +81,11 @@ public class FoodDiaryApp {
     }
 
     private void printEntry() {
-        System.out.println("You have " + days.size() + " entries");
-        System.out.println("Your entries : ");
+        List<Day> entries = foodDiary.getDays();
+        System.out.println("You have " + entries.size() + " entries");
+        System.out.println("Your entries :\n");
 
-        for (Day day : days) {
+        for (Day day : entries) {
             printDay(day);
         }
         System.out.println("\n End of entries");
@@ -157,7 +156,8 @@ public class FoodDiaryApp {
         System.out.println("Please enter a date: ");
 
         userInput = readString();
-        Day day = new Day(userInput, user.getWeight(), user.getCalorieAllowance());
+        Day day = new Day(userInput, foodDiary.getUser().getWeight(),
+                foodDiary.getUser().getCalorieAllowance());
         System.out.println("You are logging for: " + userInput);
 
         while (logging) {
@@ -171,7 +171,7 @@ public class FoodDiaryApp {
                 break;
             }
         }
-        days.add(day);
+        foodDiary.addDay(day);
     }
 
     private void logFood(Day day) {
@@ -265,6 +265,7 @@ public class FoodDiaryApp {
         return MealType.values()[choice - 1];
     }
 
+    @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
     private void setup() {
         String userName;
         Sex sex;
@@ -298,6 +299,7 @@ public class FoodDiaryApp {
         activityLevel = readActivityLevel();
         dietPlan = readDietPlan();
 
+        Person user = new Person();
         user.setName(userName);
         user.setSex(sex);
         user.setAge(age);
@@ -306,14 +308,12 @@ public class FoodDiaryApp {
         user.setWeightGoal(weightGoal);
         user.setActivityLevel(activityLevel);
         user.setDietPlan(dietPlan);
-        updateCalorieAllowance();
+
+        foodDiary = new FoodDiary(userName + "'s FoodDiary", user);
+        foodDiary.updateCalorieAllowance();
 
         System.out.println("You are done!! Here's a look at your profile:");
         printProfile();
-    }
-
-    private void updateCalorieAllowance() {
-        user.setCalorieAllowance(cc.calculateCalorieAllowance(user));
     }
 
 }

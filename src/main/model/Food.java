@@ -1,7 +1,10 @@
 package model;
 
+import model.persistence.Writable;
+import org.json.JSONObject;
+
 //A class representing a food item containing information such as its name, calories, meal type, and notes
-public class Food {
+public class Food implements Writable {
     //Fields
     private String name; //name of food
     private int calories; //How much calories this food contains
@@ -80,10 +83,22 @@ public class Food {
         this.mealType = mealType;
     }
 
+
     //Effects : Returns a string containing food
     public String toString() {
-        return "[" + getName() + ", " + getCalories() + " cal, " + getNotes() +"]";
+        return "[" + getName() + ", " + getCalories() + " cal, " + getNotes() + "]";
     }
 
 
+    //Effects: returns a JSONObject based on this food
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", name);
+        json.put("calories", calories);
+        json.put("meal type", mealType);
+        json.put("notes", notes);
+
+        return json;
+    }
 }
