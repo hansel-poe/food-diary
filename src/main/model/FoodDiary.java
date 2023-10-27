@@ -14,7 +14,7 @@ public class FoodDiary implements Writable {
     String name;// name of Diary
     Person user; //represents user of this diary
     List<Day> days; //represents entries
-    CalorieCalculator cc;
+    CalorieCalculator cc;// represents calculator
 
     //Effects: creates a Food Diary with empty name,
     //empty user, empty list of days and a calorie calculator
@@ -71,6 +71,11 @@ public class FoodDiary implements Writable {
         return days.size();
     }
 
+    //Effects: returns true if there are no entries
+    public boolean isEmpty() {
+        return days.isEmpty();
+    }
+
     //setters
 
     //Requires: name is not empty
@@ -86,7 +91,7 @@ public class FoodDiary implements Writable {
         JSONObject json = new JSONObject();
         json.put("name", name);
         json.put("user",user.toJson());
-        json.put("days",daysToJson());
+        json.put("days", daysToJson());
         return json;
     }
 
@@ -96,10 +101,5 @@ public class FoodDiary implements Writable {
             jsonArray.put(day.toJson());
         }
         return jsonArray;
-    }
-
-    //effects: returns true if there are no entries
-    public boolean isEmpty() {
-        return days.isEmpty();
     }
 }

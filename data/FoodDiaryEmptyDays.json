@@ -1,0 +1,15 @@
+{
+    "name": "Jess's Food Diary",
+    "days": [],
+    "user": {
+        "activity level": "SEDENTARY",
+        "diet plan": "PLAN1",
+        "sex": "FEMALE",
+        "calorie allowance": 1000,
+        "name": "Jess Kicks",
+        "weight": 59,
+        "weight goal": 54,
+        "age": 30,
+        "height": 170
+    }
+}

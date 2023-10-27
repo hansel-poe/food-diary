@@ -1,34 +1,39 @@
-/*
 package model.persistence;
 
+import model.FoodDiary;
 import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
+//A writer that writes JSON data to a file
 public class JsonWriter {
+    private static final int TAB = 4;
+    private PrintWriter output;
+    private String fileName;
 
-    PrintWriter writer;
-    String destination;
-
-    //Effects: constructs a destination file
-    public JsonWriter(String destination) {
-        this.destination = destination;
+    //Effects: constructs a writer with the name of the file to be written on
+    public JsonWriter(String file) {
+        this.fileName = file;
     }
 
     //Modifies : this
-    //Effects : opens writer
+    //Effects : opens file to be written on, throws FileNotFoundException if file cannot be found
     public void open() throws FileNotFoundException {
-        writer = new PrintWriter(new File(destination));
+        output = new PrintWriter(new File(fileName));
     }
 
-
-    public void write() {
-        JSONObject json =
+    //Modifies: this
+    //Effects: writes json representation of
+    public void write(FoodDiary foodDiary) {
+        JSONObject json = foodDiary.toJson();
+        output.print(json.toString(TAB));
     }
 
-
-
+    //Modifies: this
+    //Effects: closes the file
+    public void close() {
+        output.close();
+    }
 }
-*/

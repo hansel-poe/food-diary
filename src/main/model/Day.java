@@ -128,6 +128,7 @@ public class Day implements Writable {
         this.caloriesAllowed = caloriesAllowed;
     }
 
+
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
