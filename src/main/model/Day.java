@@ -1,11 +1,12 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 //A class representing a day entry containing a list of Foods eaten that day,
 // each day entry also records the weight of the user and calories allowed at the time
-// the entry is created. It also keeps track of the  total calories consumed for the day
+// the entry is created. It also keeps track of the total calories consumed for the day
 public class Day {
 
     //Fields
@@ -14,7 +15,7 @@ public class Day {
 
     private int caloriesAllowed; //total Calories allowed for this day
     private int totalCalories; //total calories consumed for the day so far;
-    private int weight; //weight for this particular day
+    private int weight; //weight for this day
 
     //Default constructor
     //Effects : constructs a day entry with empty date, 0 weight,
@@ -27,7 +28,7 @@ public class Day {
         this.foods = new ArrayList<>();
     }
 
-    //Effects: creates a Day entry with weight set to weight and calories Allowed set to
+    //Effects: creates a Day entry with weight set to weight and calories allowed set to
     // caloriesAllowed, total calories = 0, and empty food List
     public Day(String date, int weight, int caloriesAllowed) {
         this.date = date;
@@ -46,11 +47,12 @@ public class Day {
     }
 
     //Modifies : this
-    //Effects: removes food with the name in the order they are added,
-    // if no food with name is found, nothing happens. Updates total calories
-    public void removeFood(String name) {
+    //Effects: removes food with name and which belongs to mealType
+    // if no food with name and mealType is found, nothing happens.
+    // Updates total calories
+    public void removeFood(String name, MealType mealType) {
         for (Food food : foods) {
-            if (food.getName() == name) {
+            if (food.getName().equals(name) && food.getMealType() == mealType) {
                 foods.remove(food);
                 break;
             }
@@ -59,7 +61,7 @@ public class Day {
     }
 
     //Modifies : this
-    //Effects : adds up all total calories from food to get total calories
+    //Effects : adds up all total calories from food in foods to get total calories
     private void updateTotalCalories() {
         totalCalories = 0; // resets total calories
         for (Food food : foods) {
@@ -84,9 +86,15 @@ public class Day {
         return caloriesAllowed;
     }
 
-    //Effects: returns amount calorie allowance left for the day, if total calories exceed the calories allowed, return 0
+    //Effects: returns an unmodifiable list of foods
+    public List<Food> getFoods() {
+        return Collections.unmodifiableList(foods);
+    }
+
+    //Effects: returns amount calorie allowance left for the day,
+    //if total calories exceed the calories allowed, return 0
     public int getCaloriesLeft() {
-        if (caloriesAllowed - totalCalories < 0) {
+        if (caloriesAllowed - totalCalories <= 0) {
             return 0;
         } else {
             return (caloriesAllowed - totalCalories);
@@ -114,11 +122,6 @@ public class Day {
 
     public void setCaloriesAllowed(int caloriesAllowed) {
         this.caloriesAllowed = caloriesAllowed;
-    }
-
-    //Returns Food at the position of index in the list
-    public Food getFood(int index) {
-        return foods.get(index);
     }
 }
 

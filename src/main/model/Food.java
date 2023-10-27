@@ -1,25 +1,24 @@
 package model;
 
-import model.exceptions.InvalidMealTypeException;
-
-//A class representing a food item with information about its calories, meal type, and notes
+//A class representing a food item containing information such as its name, calories, meal type, and notes
 public class Food {
     //Fields
     private String name; //name of food
     private int calories; //How much calories this food contains
-    private String mealType; //the type of meal this food belongs to,has to be one of breakfast, lunch, dinner, or snack
+    private MealType mealType; //the type of meal this food belongs to,
+                               // has to be one of breakfast, lunch, dinner, or snack
     private String notes; //User notes on this particular item, can be used to indicate quantity of food
 
-    //Default constructor, creates a food item with no name, 0 calories, and no notes
+    //Default constructor, creates a food item with no name, 0 calories, Breakfast MealType and no notes
     public Food() {
-        name = " ";
+        name = "";
         calories = 0;
-        mealType = "Breakfast";
+        mealType = null;
         notes = "";
     }
 
     //Copy Constructor
-    //Effects: creates a new Food item based on food
+    //Effects: creates a new Food item based on food argument
     public Food(Food food) {
         this.name = food.name;
         this.calories = food.calories;
@@ -29,10 +28,7 @@ public class Food {
 
     //Requires: name is not empty and calories > 0
     //Effects: creates a food item with name, calories, and notes as specified
-    public Food(String name, int calories, String mealType, String notes) throws InvalidMealTypeException {
-        if (!isValidMealType(mealType)) {
-            throw new InvalidMealTypeException();
-        }
+    public Food(String name, int calories, MealType mealType, String notes) {
         this.name = name;
         this.calories = calories;
         this.mealType = mealType;
@@ -52,7 +48,7 @@ public class Food {
         return notes;
     }
 
-    public String getMealType() {
+    public MealType getMealType() {
         return mealType;
     }
 
@@ -79,23 +75,15 @@ public class Food {
     }
 
     //Modifies : this
-    //Effects: sets the meal type, throws an exception if mealType is invalid
-    public void setMealType(String mealType) throws InvalidMealTypeException {
-        if (!isValidMealType(mealType)) {
-            throw new InvalidMealTypeException();
-        }
+    //Effects: sets the meal type, to one of the MealType values
+    public void setMealType(MealType mealType) {
         this.mealType = mealType;
     }
 
-    //Effects: returns true if mealType is one of "Breakfast", "Lunch", "Dinner", or "Snack"
-    // false otherwise
-    private boolean isValidMealType(String mealType) {
-        return mealType.equals("Breakfast") || mealType.equals("Lunch")
-                || mealType.equals("Dinner") || mealType.equals("Snack");
+    //Effects : Returns a string containing food
+    public String toString() {
+        return "[" + getName() + ", " + getCalories() + " cal, " + getNotes() +"]";
     }
 
-    //Effects : prints the name of food, its calories, and notes about this food
-    public String toString() {
-        return ("[" + name + ", cal = " + calories + ", " + notes + "]");
-    }
+
 }
