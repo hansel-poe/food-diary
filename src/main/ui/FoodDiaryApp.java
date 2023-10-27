@@ -1,7 +1,10 @@
 package ui;
 
 import model.*;
+import model.persistence.*;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,14 +12,20 @@ import java.util.Scanner;
 
 public class FoodDiaryApp {
 
+    //Save file destination
+    private static final String JSON_STORE = "./data/FoodDiary.json";
     //Declaring fields
     private FoodDiary foodDiary;
     private Scanner input;
+    private JsonWriter writer;
+    private JsonReader reader;
 
     //Effects: Initializes variables and runs the FoodDiary app
     public FoodDiaryApp() {
         input = new Scanner(System.in);
         input.useDelimiter("\n");
+        writer = new JsonWriter(JSON_STORE);
+        reader = new JsonReader(JSON_STORE);
 
         runFoodDiary();
     }
@@ -26,7 +35,7 @@ public class FoodDiaryApp {
     private void runFoodDiary() {
         boolean runs = true;
 
-        setup();//sets up user profile
+        loadOption();
         while (runs) {
             displayMenu();
 
@@ -42,7 +51,26 @@ public class FoodDiaryApp {
                 processOption(option);
             }
         }
-        System.out.println("Thanks for using FoodDiary :)");
+        System.out.println("Thanks for using FoodDiary :D");
+    }
+
+    private void loadOption() {
+        System.out.println("\nHi!, welcome to FoodDiary, create a new FoodDiary or load an existing one.");
+        System.out.println("\tn -> New FoodDiary");
+        System.out.println("\tl -> Load an Existing FoodDiary\n");
+
+        String option = readString();
+        option = option.toLowerCase();
+        option = option.trim();
+
+        if (option.equals("n")) {
+            setup();
+        } else if (option.equals("l")) {
+            loadFoodDiary();
+        } else {
+            System.out.println("Invalid input, Please try again");
+            loadOption();
+        }
     }
 
     private void processOption(String option) {
@@ -52,8 +80,36 @@ public class FoodDiaryApp {
             printEntry();
         } else if (option.equals("p")) {
             printProfile();
+        } else if (option.equals("s")) {
+            saveFoodDiary();
+        } else if (option.equals("r")) {
+            loadFoodDiary();
         } else {
             System.out.println("Invalid input, Please try again.");
+        }
+    }
+
+    //Modifies: this
+    //Effects: loads FoodDiary from JSON_STORE
+    private void loadFoodDiary() {
+        try {
+            foodDiary = reader.read();
+            System.out.println("Loaded " + foodDiary.getName() + " from " + JSON_STORE);
+        } catch (IOException e) {
+            System.out.println("Load failed: cannot load FoodDiary from: " + JSON_STORE);
+        }
+    }
+
+    //Modifies: this
+    //Effects: saves FoodDiary to JSON_STORE
+    private void saveFoodDiary() {
+        try {
+            writer.open();
+            writer.write(foodDiary);
+            writer.close();
+            System.out.println("Saved : " + foodDiary.getName() + " to " + JSON_STORE);
+        } catch (FileNotFoundException e) {
+            System.out.println("Save failed: cannot save to " + JSON_STORE);
         }
     }
 
@@ -62,7 +118,9 @@ public class FoodDiaryApp {
         System.out.println("\tl -> Log an entry");
         System.out.println("\te -> View all entries");
         System.out.println("\tp -> View Profile");
-        System.out.println("\tq -> Quit app");
+        System.out.println("\ts -> Save Food Diary");
+        System.out.println("\tr -> Load Food Diary");
+        System.out.println("\tq -> Quit app\n");
     }
 
     //Effects: prints the user profile

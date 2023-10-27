@@ -1,0 +1,48 @@
+{
+    "name": "Hansel's FoodDiary",
+    "days": [
+        {
+            "date": "Monday",
+            "foods": [
+                {
+                    "notes": "Gooey",
+                    "name": "Cheese",
+                    "calories": 230,
+                    "meal type": "LUNCH"
+                },
+                {
+                    "notes": "Oily",
+                    "name": "Fries",
+                    "calories": 300,
+                    "meal type": "DINNER"
+                }
+            ],
+            "weight": 67,
+            "calories allowed": 2019,
+            "total calories": 530
+        },
+        {
+            "date": "Tuesday",
+            "foods": [{
+                "notes": "Nothing beats a good ol' pb and j",
+                "name": "PB and J",
+                "calories": 100,
+                "meal type": "SNACK"
+            }],
+            "weight": 67,
+            "calories allowed": 2019,
+            "total calories": 100
+        }
+    ],
+    "user": {
+        "activity level": "ACTIVE",
+        "diet plan": "PLAN2",
+        "sex": "MALE",
+        "calorie allowance": 2019,
+        "name": "Hansel",
+        "weight": 67,
+        "weight goal": 60,
+        "age": 30,
+        "height": 176
+    }
+}
