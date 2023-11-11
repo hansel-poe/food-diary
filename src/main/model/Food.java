@@ -9,19 +9,19 @@ public class Food implements Writable {
     private String name; //name of food
     private int calories; //How much calories this food contains
     private MealType mealType; //the type of meal this food belongs to,
-                               // has to be one of breakfast, lunch, dinner, or snack
-    private String notes; //User notes on this particular item, can be used to indicate quantity of food
+                               //see MealType Enum for more info
+    private String notes; //User notes on this particular food item
 
-    //Default constructor, creates a food item with no name, 0 calories, Breakfast MealType and no notes
+    //Default constructor, creates a food item with no name, 0 calories, no MealType and no notes
     public Food() {
-        name = "";
+        name = null;
         calories = 0;
         mealType = null;
-        notes = "";
+        notes = null;
     }
 
     //Copy Constructor
-    //Effects: creates a new Food item based on food argument
+    //Effects: creates a new Food item with fields copied from food
     public Food(Food food) {
         this.name = food.name;
         this.calories = food.calories;
@@ -83,12 +83,10 @@ public class Food implements Writable {
         this.mealType = mealType;
     }
 
-
-    //Effects : Returns a string containing food
+    //Effects : prints food item
     public String toString() {
         return "[" + getName() + ", " + getCalories() + " cal, " + getNotes() + "]";
     }
-
 
     //Effects: returns a JSONObject based on this food
     @Override
