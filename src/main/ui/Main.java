@@ -1,5 +1,10 @@
 package ui;
 
+import model.ActivityLevel;
+import model.DietPlan;
+import model.Person;
+import model.Sex;
+
 import javax.swing.*;
 
 public class Main {
@@ -7,7 +12,20 @@ public class Main {
         JFrame myFrame = new JFrame();
         myFrame.setSize(500,500);
         myFrame.setTitle("profile");
-        myFrame.add(new ProfileUI());
+
+        Person guy = new Person();
+        guy.setName("John");
+        guy.setAge(25);
+        guy.setWeight(75);
+        guy.setHeight(183);
+        guy.setSex(Sex.MALE);
+        guy.setActivityLevel(ActivityLevel.SEDENTARY);
+
+        guy.setWeightGoal(69);
+        guy.setDietPlan(DietPlan.PLAN1);
+
+
+        myFrame.add(new ProfileUI(guy));
 
         myFrame.setVisible(true);
 

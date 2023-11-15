@@ -53,29 +53,32 @@ public class ProfileUI extends JPanel implements PropertyChangeListener, ActionL
     private JFormattedTextField caloriesAllowedField; //is uneditable
     private JFormattedTextField goalLengthField;//is uneditable
 
-    //Combo box for sex options
+    //ComboBoxes for sex options, Diet plan options and activityLevel options
     private JComboBox sexList;
-
-    //Combo box for diet plan options
     private JComboBox planList;
-
-    //Combo box for activity level options
     private JComboBox activityList;
 
-    //Button for disabling and enabling editing and resetting values in fields
+    //Button for disabling and enabling editing and resetting values
     private JPanel buttonsPanel;
     private JButton set;
     private JButton edit;
     private JButton reset;
 
-    public ProfileUI() {
-        //this.user = user;
+    public ProfileUI(Person user) {
+        this.user = user;
+        cc = new CalorieCalculator();
 
-        /*this.name = user.getName();
+        this.name = user.getName();
         this.age = user.getAge();
         this.weight = user.getWeight();
         this.height = user.getHeight();
-        this.sex = user.getSex();*/
+        this.sex = user.getSex();
+        this.activityLevel = user.getActivityLevel();
+
+        this.weightGoal = user.getWeightGoal();
+        this.dietPlan = user.getDietPlan();
+        this.caloriesAllowed = user.getCalorieAllowance();
+        this.goalLength = user.getGoalLength();
 
         initLabels();
         setupTextFields();
@@ -165,6 +168,7 @@ public class ProfileUI extends JPanel implements PropertyChangeListener, ActionL
         this.add(formPane, BorderLayout.CENTER);
     }
 
+    //MODIFIES: this
     //EFFECTS: Sets up labels for the ui
     private void initLabels() {
         nameLabel = new JLabel("Name:");
@@ -179,7 +183,8 @@ public class ProfileUI extends JPanel implements PropertyChangeListener, ActionL
         goalLengthLabel = new JLabel("Days to reach goal: ");
     }
 
-    //EFFECTS: Sets up the set and edit buttons
+    //MODIFIES: this
+    //EFFECTS: Sets up the set,edit and reset buttons
     private void setupButtons() {
         set = new JButton("Set");
         set.addActionListener(this);
@@ -188,7 +193,7 @@ public class ProfileUI extends JPanel implements PropertyChangeListener, ActionL
         edit.addActionListener(this);
 
         reset = new JButton("Reset");
-        edit.addActionListener(this);
+        reset.addActionListener(this);
 
         GridLayout gridLayout = new GridLayout(1, 3);
         gridLayout.setHgap(10);
@@ -200,7 +205,8 @@ public class ProfileUI extends JPanel implements PropertyChangeListener, ActionL
         buttonsPanel.add(edit);
     }
 
-    //EFFECTS: Sets up the two ComboBoxes in the form
+    //MODIFIES: this
+    //EFFECTS: Sets up ComboBoxes
     private void setupComboBoxes() {
         activityList = new JComboBox(ActivityLevel.values());
         activityList.setSelectedItem(activityLevel);
@@ -215,6 +221,7 @@ public class ProfileUI extends JPanel implements PropertyChangeListener, ActionL
         sexList.addActionListener(this);
     }
 
+    //MODIFIES: this
     //EFFECTS: Sets up text fields
     private void setupTextFields() {
         nameField = new JTextField(15);
@@ -254,7 +261,7 @@ public class ProfileUI extends JPanel implements PropertyChangeListener, ActionL
     }
 
     //For debugging purposes only
-    private void printValues() {
+/*    private void printValues() {
         System.out.println(name);
         System.out.println(age);
         System.out.println(weight);
@@ -265,8 +272,9 @@ public class ProfileUI extends JPanel implements PropertyChangeListener, ActionL
         System.out.println(dietPlan);
         System.out.println(caloriesAllowed);
         System.out.println(goalLength);
-    }
+    }*/
 
+    //MODIFIES: this
     //EFFECTS: if state is true, all fields, ComboBoxes and buttons will be enabled.
     //otherwise, all fields, ComboBoxes and buttons will be disabled
     private void setEditing(boolean state) {
@@ -284,6 +292,7 @@ public class ProfileUI extends JPanel implements PropertyChangeListener, ActionL
         edit.setEnabled(!state);
     }
 
+    //MODIFIES: this
     //EFFECTS: Registers user input into user, also calculates new calorieAllowance and weightGoal
     private void setProfile() {
         user.setName(name);
@@ -301,7 +310,8 @@ public class ProfileUI extends JPanel implements PropertyChangeListener, ActionL
         //GoalLength is not part of user's fields therefore we do not modify it in the user
     }
 
-    //EFFECTS: resets fields and values displayed
+    //MODIFIES: this
+    //EFFECTS: resets fields and values displayed to previous user info
     private void resetValues() {
         name = user.getName();
         age = user.getAge();
@@ -314,9 +324,9 @@ public class ProfileUI extends JPanel implements PropertyChangeListener, ActionL
         dietPlan = user.getDietPlan();
         //caloriesAllowed and goalLength does not to be reset as
         //they only change once set is clicked
-
     }
 
+    //MODIFIES: this
     //EFFECTS: updates values displayed in components
     private void updateComponents() {
         nameField.setText(name);
@@ -332,8 +342,8 @@ public class ProfileUI extends JPanel implements PropertyChangeListener, ActionL
         goalLengthField.setValue(new Integer(goalLength));
     }
 
-
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Listeners~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    //MODIFIES: this
     //Effects: Listens for Formatted textFields changes and records changes in corresponding variables
     @Override
     public void propertyChange(PropertyChangeEvent e) {
@@ -347,10 +357,14 @@ public class ProfileUI extends JPanel implements PropertyChangeListener, ActionL
         } else if (source == weightGoalField) {
             weightGoal = ((Number) weightGoalField.getValue()).intValue();
         }
-        printValues();
     }
 
-    //Listens for changes in ComboBoxes and set, edit and reset buttons
+    //MODIFIES: this
+    //EFFECTS: Listens for changes in ComboBoxes and set, edit and reset buttons
+    //If  ComboBoxes are the source of events, sets appropriate values for corresponding fields
+    //If set is the event source, registers values to user, disables editing by disabling all components except for edit
+    //If edit is the event source, enables all components except for edit
+    //If reset is the event source, resets all values to the previous user info.
     @Override
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
@@ -364,7 +378,7 @@ public class ProfileUI extends JPanel implements PropertyChangeListener, ActionL
             JComboBox cb = (JComboBox) source;
             sex = (Sex) cb.getSelectedItem();
         } else if (source == set) {
-            //setProfile();
+            setProfile();
             updateComponents();
             setEditing(false);
         } else if (source == edit) {
@@ -373,20 +387,20 @@ public class ProfileUI extends JPanel implements PropertyChangeListener, ActionL
             resetValues();
             updateComponents();
         }
-        printValues();
     }
 
-    //Listens for changes in name field and records changes in variables
+    //MODIFIES: this
+    //EFFECTS:Listens for changes in name field and records changes in variables
     @Override
     public void insertUpdate(DocumentEvent e) {
         this.name = nameField.getText();
-        System.out.println(name);
     }
 
+    //MODIFIES: this
+    //EFFECTS:Listens for changes in name field and records changes in variables
     @Override
     public void removeUpdate(DocumentEvent e) {
         this.name = nameField.getText();
-        System.out.println(name);
     }
 
     @Override
