@@ -35,4 +35,10 @@ public enum DietPlan {
     public String getMsg() {
         return msg;
     }
+
+    //EFFECTS: returns the name of the enum appended with message
+    @Override
+    public String toString() {
+        return super.toString() + ", " + getMsg();
+    }
 }

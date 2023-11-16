@@ -1,38 +1,87 @@
 package ui;
 
-import model.FoodDiary;
+import model.*;
+import model.persistence.JsonReader;
+import model.persistence.JsonWriter;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
-public class FoodDiaryUI extends JFrame {
+public class FoodDiaryUI extends JFrame implements ActionListener {
     private static final int WIDTH = 500;
     private static final int HEIGHT = 500;
 
     private FoodDiary foodDiary;
-    private JLabel appTitle;
-    private ProfileUI profileScreen;
 
-    private JPanel startScreen;
-    private JPanel mainMenu;
-    private JPanel setupScreen;
-    private JPanel profile;
+    //for saving progress
+    private static final String JSON_STORE = "./data/FoodDiary.json";
+    private JsonReader reader;
+    private JsonWriter writer;
 
+    //Main screen is a tabbed pane
+    private JTabbedPane mainScreen;
+    private ProfileUI profilePage;
+    private JTextField diaryName;
+
+    //Menu bar items
+    private JMenuBar menuBar;
+    private JMenu file;
+    private JMenuItem newDiary;
+    private JMenuItem save;
+    private JMenuItem load;
 
     public FoodDiaryUI() {
-        //creates new Food diary app
-        foodDiary = new FoodDiary();
+        reader = new JsonReader(JSON_STORE);
+        writer = new JsonWriter(JSON_STORE);
 
-        //displays title on top of the window
-        appTitle = new JLabel();
-        appTitle.setText("FoodDiary");
-        appTitle.setFont(new Font("Helvetica", Font.BOLD, 30));
-        appTitle.setBackground(Color.LIGHT_GRAY);
+        //sets up window title
+        setTitle("FoodDiary");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(new BorderLayout());
+        setSize(WIDTH, HEIGHT);
 
-        //creates start screen of the app
+        //creates menuBar for saving and loading
+        menuBar = new JMenuBar();
+        file = new JMenu("File");
+        file.setMnemonic(KeyEvent.VK_F);
+
+        newDiary = new JMenuItem("New", KeyEvent.VK_N);
+        save = new JMenuItem("Save", KeyEvent.VK_S);
+        load = new JMenuItem("Load", KeyEvent.VK_L);
+
+        newDiary.addActionListener(this);
+        save.addActionListener(this);
+        load.addActionListener(this);
+
+        file.add(newDiary);
+        file.add(save);
+        file.add(load);
+
+        menuBar.add(file);
+        this.setJMenuBar(menuBar);
+
+        //For testing only
+     /*   Person guy = new Person();
+        guy.setName("John");
+        guy.setAge(25);
+        guy.setWeight(75);
+        guy.setHeight(183);
+        guy.setSex(Sex.MALE);
+        guy.setActivityLevel(ActivityLevel.SEDENTARY);
+
+        guy.setWeightGoal(69);
+        guy.setDietPlan(DietPlan.PLAN1);
+
+        profilePage = new ProfileUI(guy);*/
+
+
+
+       /* //creates start screen of the app
         startScreen = new JPanel();
         startScreen.setLayout(new BoxLayout(startScreen, BoxLayout.PAGE_AXIS));
         startScreen.setBackground(Color.LIGHT_GRAY);
@@ -48,147 +97,75 @@ public class FoodDiaryUI extends JFrame {
 
         addStartScreenComponents();
         addMainMenuComponents();
-
-        setTitle("FoodDiary");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new BorderLayout());
-        setSize(WIDTH, HEIGHT);
-
-        this.add(appTitle, BorderLayout.NORTH);
-        this.add(startScreen, BorderLayout.CENTER);
-
+*/
+        mainScreen = new JTabbedPane();
+        this.add(mainScreen, BorderLayout.CENTER);
         this.setVisible(true);
     }
 
-    private void addStartScreenComponents() {
-        JLabel startLabel = new JLabel("Welcome to FoodDiary,\n would you like to start a new Diary or load an existing one?");
-        startLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        startLabel.setFont(new Font("Helvetica", Font.PLAIN, 15));
+    //MODIFIES: this
+    //EFFECTS: creates a new FoodDiary with a new profile, changes are lost if not saved
+    private void createNewDiary() {
+        mainScreen.removeAll();
 
-        JButton newDiary = new JButton("New");
-        newDiary.setAlignmentX(Component.CENTER_ALIGNMENT);
-        newDiary.setMnemonic(KeyEvent.VK_N);
-        newDiary.setActionCommand("New");
+        Person user = new Person();
+        foodDiary = new FoodDiary("New Diary", user); //replaces old foodDiary
 
-        JButton loadDiary = new JButton("Load");
-        loadDiary.setAlignmentX(Component.CENTER_ALIGNMENT);
-        loadDiary.setMnemonic(KeyEvent.VK_L);
-        loadDiary.setActionCommand("Load");
+        profilePage = new ProfileUI(user); //replaces old profile Page
+        mainScreen.addTab("Profile", profilePage);
 
-        newDiary.addActionListener(new FirstScreenOptions());
-        loadDiary.addActionListener(new FirstScreenOptions());
-
-        startScreen.add(startLabel);
-        startScreen.add(Box.createRigidArea(new Dimension(0, 10)));
-        startScreen.add(newDiary);
-        startScreen.add(Box.createRigidArea(new Dimension(0, 10)));
-        startScreen.add(loadDiary);
+        revalidate();
+        repaint();
     }
 
-    private void setSetupScreen() {
-        JLabel setupLabel = new JLabel("Enter the following information");
-
-        JLabel nameLabel = new JLabel("Name:    ");
-        JTextField name = new JTextField();
-
-    }
-    private void addMainMenuComponents() {
-        JLabel menuLabel = new JLabel("Please select an option: ");
-        menuLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        menuLabel.setFont(new Font("Helvetica", Font.PLAIN, 15));
-
-        JButton addEntry = new JButton("Add Entry");
-        addEntry.setAlignmentX(Component.CENTER_ALIGNMENT);
-        addEntry.setMnemonic(KeyEvent.VK_A);
-        addEntry.setActionCommand("Add Entry");
-
-        JButton viewProfile = new JButton("View Profile");
-        viewProfile.setAlignmentX(Component.CENTER_ALIGNMENT);
-        viewProfile.setMnemonic(KeyEvent.VK_P);
-        viewProfile.setActionCommand("View Profile");
-
-        JButton viewEntries = new JButton("View Entries");
-        viewEntries.setAlignmentX(Component.CENTER_ALIGNMENT);
-        viewEntries.setMnemonic(KeyEvent.VK_E);
-        viewEntries.setActionCommand("View Entries");
-
-        JButton quit = new JButton("Quit");
-        quit.setAlignmentX(Component.CENTER_ALIGNMENT);
-        quit.setMnemonic(KeyEvent.VK_Q);
-        quit.setActionCommand("Quit");
-
-        mainMenu.add(menuLabel);
-        mainMenu.add(Box.createRigidArea(new Dimension(0, 10)));
-        mainMenu.add(addEntry);
-        mainMenu.add(Box.createRigidArea(new Dimension(0, 10)));
-        mainMenu.add(viewProfile);
-        mainMenu.add(Box.createRigidArea(new Dimension(0, 10)));
-        mainMenu.add(viewEntries);
-        mainMenu.add(Box.createRigidArea(new Dimension(0, 10)));
-        mainMenu.add(quit);
-        addSexRadioButtons(mainMenu);
-    }
-
-    private void changePanel(JPanel panel) {
-        getContentPane().removeAll();
-        add(appTitle, BorderLayout.NORTH);
-        add(panel, BorderLayout.CENTER);
-
-        System.out.println("Panel Changed");
-        this.revalidate();
-        this.repaint();
-    }
-
-    public void addSexRadioButtons(JPanel panel) {
-        JLabel sexLabel = new JLabel("Please select your sex: ");
-
-        JRadioButton male = new JRadioButton("Male");
-        male.setMnemonic(KeyEvent.VK_M);
-        male.setActionCommand("Male");
-        male.setSelected(true);
-
-        JRadioButton female = new JRadioButton("Female");
-        female.setMnemonic(KeyEvent.VK_F);
-        female.setActionCommand("Female");
-        female.setSelected(true);
-
-        ButtonGroup group = new ButtonGroup();
-        group.add(male);
-        group.add(female);
-
-        panel.add(male);
-        panel.add(female);
-    }
-
-    private class FirstScreenOptions implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            if (e.getActionCommand().equals("New")) {
-                System.out.println("New pressed");
-            }
-
-            if (e.getActionCommand().equals("Load")) {
-                System.out.println("Load pressed");
-            }
-            changePanel(mainMenu);
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        Object source = e.getSource();
+        if (source == newDiary) {
+            createNewDiary();
+        } else if (source == save) {
+            saveFoodDiary();
+        } else if (source == load) {
+            loadFoodDiary();
         }
     }
 
-    private class SexOptions implements ActionListener {
+    //MODIFIES: this
+    //EFFECTS: loads JSON_STORE to current food diary
+    private void loadFoodDiary() {
 
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            if (e.getActionCommand().equals("Male")) {
-                System.out.println("Male is selected");
-            }
-
-            if (e.getActionCommand().equals("Female")) {
-                System.out.println("Female is selected");
-            }
-
+        try {
+            foodDiary = reader.read();
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this,
+                    "Load failed: cannot load FoodDiary from: " + JSON_STORE, "Load Failed", JOptionPane.ERROR_MESSAGE);
+            return;// exits method
         }
+        mainScreen.removeAll();
+        profilePage = new ProfileUI(foodDiary.getUser());
+
+        mainScreen.addTab("Profile",profilePage);
+
+        revalidate();
+        repaint();
+        JOptionPane.showMessageDialog(this,"Load successful");
     }
 
+    //MODIFIES: this
+    //EFFECTS: saves current food diary to JSON_STORE
+    private void saveFoodDiary() {
+        try {
+            writer.open();
+            writer.write(foodDiary);
+            writer.close();
+        } catch (FileNotFoundException e) {
+            JOptionPane.showMessageDialog(this,
+                    "Save failed: cannot save to " + JSON_STORE, "Save failed", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        JOptionPane.showMessageDialog(this,
+                "Diary successfully saved to " + JSON_STORE);
+    }
 
 }
 

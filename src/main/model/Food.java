@@ -12,12 +12,13 @@ public class Food implements Writable {
                                //see MealType Enum for more info
     private String notes; //User notes on this particular food item
 
-    //Default constructor, creates a food item with no name, 0 calories, no MealType and no notes
+    //Default constructor, creates a food item with empty name,
+    //0 calories, Breakfast MealType and empty notes
     public Food() {
-        name = null;
+        name = "";
         calories = 0;
-        mealType = null;
-        notes = null;
+        mealType = MealType.BREAKFAST;
+        notes = "";
     }
 
     //Copy Constructor

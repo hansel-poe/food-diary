@@ -9,7 +9,7 @@ import javax.swing.*;
 
 public class Main {
     public static void main(String[] args) {
-        JFrame myFrame = new JFrame();
+        /*JFrame myFrame = new JFrame();
         myFrame.setSize(500,500);
         myFrame.setTitle("profile");
 
@@ -24,10 +24,15 @@ public class Main {
         guy.setWeightGoal(69);
         guy.setDietPlan(DietPlan.PLAN1);
 
-
         myFrame.add(new ProfileUI(guy));
+        myFrame.setVisible(true);*/
+       /* JFrame myFrame = new JFrame();
+        myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        myFrame.setSize(500,500);
 
-        myFrame.setVisible(true);
+        myFrame.add(new NewDiaryUI());
+        myFrame.setVisible(true);*/
 
+        new FoodDiaryUI();
     }
 }

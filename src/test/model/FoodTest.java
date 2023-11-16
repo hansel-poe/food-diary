@@ -26,7 +26,7 @@ class FoodTest {
     void testDefaultConstructor() {
         assertTrue(testFood4.getName().isEmpty());
         assertTrue(testFood4.getNotes().isEmpty());
-        assertNull(testFood4.getMealType());
+        assertEquals(MealType.BREAKFAST, testFood4.getMealType());
         assertEquals(0, testFood4.getCalories());
     }
 

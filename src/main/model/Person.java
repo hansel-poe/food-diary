@@ -25,10 +25,12 @@ public class Person implements Writable {
     //each specifies a particular amount of calories to cut per day
     //which determines how much weight will be lost per week
 
-    //Effects:
+    //EFFECTS: creates a new person with an empty name, sex specified as male,
+    // diet plan specified as plan 1, and activity level specified as sedentary
+    // and with age, height, weight, calorie allowance, weight goal all set to zero
     public Person() {
         name = "";
-        sex = null;
+        sex = Sex.MALE;
         age = 0;
         weight = 0;
         height = 0;
@@ -36,8 +38,8 @@ public class Person implements Writable {
         calorieAllowance = 0;
         weightGoal = 0;
 
-        activityLevel = null;
-        dietPlan = null;
+        activityLevel = ActivityLevel.SEDENTARY;
+        dietPlan = DietPlan.PLAN1;
     }
 
     //Effects: returns calories cut per day according to diet plan

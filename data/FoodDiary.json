@@ -1,40 +1,15 @@
 {
-    "name": "Hansel's FoodDiary",
-    "days": [
-        {
-            "date": "Monday",
-            "foods": [{
-                "notes": "Gooey",
-                "name": "Cheese",
-                "calories": 120,
-                "meal type": "DINNER"
-            }],
-            "weight": 75,
-            "calories allowed": 1828,
-            "total calories": 120
-        },
-        {
-            "date": "Tuesday",
-            "foods": [{
-                "notes": "GOod sandwich",
-                "name": "PB and J",
-                "calories": 75,
-                "meal type": "LUNCH"
-            }],
-            "weight": 75,
-            "calories allowed": 1828,
-            "total calories": 75
-        }
-    ],
+    "name": "New Diary",
+    "days": [],
     "user": {
-        "activity level": "LIGHT",
+        "activity level": "SEDENTARY",
         "diet plan": "PLAN2",
         "sex": "MALE",
-        "calorie allowance": 1828,
+        "calorie allowance": 1514,
         "name": "Hansel",
-        "weight": 75,
-        "weight goal": 70,
-        "age": 25,
-        "height": 170
+        "weight": 66,
+        "weight goal": 60,
+        "age": 20,
+        "height": 178
     }
 }

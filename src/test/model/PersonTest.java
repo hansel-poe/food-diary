@@ -29,15 +29,15 @@ public class PersonTest {
         jonny = new Person();
 
         assertTrue(jonny.getName().isEmpty());
-        assertNull(jonny.getSex());
-        assertEquals(0,jonny.getAge());
+        assertEquals(Sex.MALE, jonny.getSex());
+        assertEquals(0, jonny.getAge());
         assertEquals(0, jonny.getWeight());
         assertEquals(0, jonny.getHeight());
 
         assertEquals(0, jonny.getCalorieAllowance());
         assertEquals(0, jonny.getWeightGoal());
-        assertNull(jonny.getDietPlan());
-        assertNull(jonny.getActivityLevel());
+        assertEquals(DietPlan.PLAN1, jonny.getDietPlan());
+        assertEquals(ActivityLevel.SEDENTARY, jonny.getActivityLevel());
     }
     @Test
     void testGetSex() {
