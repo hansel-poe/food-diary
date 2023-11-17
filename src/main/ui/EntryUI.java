@@ -9,6 +9,7 @@ import javax.swing.table.AbstractTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 
 //Represents a screen for managing a particular day entry, this class modifies the day entry it manages
@@ -65,34 +66,34 @@ public class EntryUI extends JPanel implements ActionListener {
         c.gridx = 1;
         bottomPanel.add(totalCaloriesLabel, c);
 
-        c.gridy = 1;
-        c.gridx = 0;
+        c.gridx = 2;
         bottomPanel.add(new JLabel("Calories allowed"), c);
 
-        c.gridx = 1;
+        c.gridx = 3;
         bottomPanel.add(caloriesAllowedLabel, c);
 
-        c.gridy = 2;
-        c.gridx = 0;
+        c.gridx = 4;
         bottomPanel.add(new JLabel("Calorie allowance left:"), c);
 
-        c.gridx = 1;
+        c.gridx = 5;
         bottomPanel.add(caloriesLeftLabel, c);
 
-        c.gridy = 3;
-        c.gridx = 0;
+        c.gridx = 6;
         bottomPanel.add(new JLabel("Weight (in kg)"), c);
 
-        c.gridx = 1;
+        c.gridx = 7;
         bottomPanel.add(weightLabel, c);
 
-        c.gridy = 4;
+        c.gridy = 1;
         c.gridx = 0;
         c.gridwidth = 9;
-        bottomPanel.add(new JSeparator(), c);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        JSeparator separator = new JSeparator();
+        separator.setForeground(Color.CYAN);
+        bottomPanel.add(separator, c);
         c.gridwidth = 1;
 
-        c.gridy = 5;
+        c.gridy = 2;
         c.gridx = 0;
         bottomPanel.add(new JLabel("Name:"), c);
 
@@ -121,7 +122,7 @@ public class EntryUI extends JPanel implements ActionListener {
         bottomPanel.add(addFood, c);
         c.fill = GridBagConstraints.HORIZONTAL;
 
-        c.gridy = 6;
+        c.gridy = 3;
         c.gridx = 8;
         bottomPanel.add(removeFood, c);
         ;
@@ -211,13 +212,18 @@ public class EntryUI extends JPanel implements ActionListener {
         }
 
         //MODIFIES: this
-        //EFFECTS: removes food item from list
-        public void remove(Food food) {
-            if (foods.contains(food)) {
-                int row = foods.indexOf(food);
-                foods.remove(row);
-                fireTableRowsDeleted(row, row);
+        //EFFECTS: removes food item from foods and update tables
+        public void remove(int[] indexes) {
+            List<Food> foodsToRemove = new ArrayList<>();
+            for (int i : indexes) {
+                foodsToRemove.add(foods.get(i));
             }
+            foods.removeAll(foodsToRemove);
+          /*  //doesnt work
+            for (int i : indexes) {
+                foods.remove(i);
+            }*/
+            fireTableRowsDeleted(indexes[0],indexes[indexes.length - 1]);
         }
     }
 
@@ -253,6 +259,8 @@ public class EntryUI extends JPanel implements ActionListener {
         return new Food(name, calories, mealType, notes);
     }
 
+    //MODIFIES: this
+    //EFFECTS: listens to events from addFood and removeFood button
     @Override
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
@@ -261,11 +269,10 @@ public class EntryUI extends JPanel implements ActionListener {
             updateLabels();
             resetFields();
         } else if (source == removeFood) {
-
-
+            int[]indexes = entryTable.getSelectedRows();
+            tableModel.remove(indexes);
+            updateLabels();
         }
     }
-
-
 }
 
