@@ -5,7 +5,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 //A class representing a day entry containing a list of food items,
@@ -18,7 +17,6 @@ public class Day implements Writable {
     private String date; //represents the name of the day
 
     private int caloriesAllowed; //total Calories allowed for this day
-    private int totalCalories; //total calories consumed for the day so far;
     private int weight; //weight for this day
 
     //Default constructor
@@ -28,7 +26,6 @@ public class Day implements Writable {
         this.date = "";
         this.weight = 0;
         this.caloriesAllowed = 0;
-        this.totalCalories = 0;
         this.foods = new ArrayList<>();
     }
 
@@ -39,7 +36,6 @@ public class Day implements Writable {
         this.weight = weight;
         this.caloriesAllowed = caloriesAllowed;
 
-        totalCalories = 0;
         foods = new ArrayList<Food>();
     }
 
@@ -47,7 +43,6 @@ public class Day implements Writable {
     //Effects: adds a food item to the list of foods in the day, updates total calories
     public void addFood(Food food) {
         foods.add(food);
-        updateTotalCalories();
     }
 
     //Modifies : this
@@ -61,16 +56,6 @@ public class Day implements Writable {
                 break;
             }
         }
-        updateTotalCalories();
-    }
-
-    //Modifies : this
-    //Effects : adds up all total calories in each food items to get total calories
-    private void updateTotalCalories() {
-        totalCalories = 0; // resets total calories
-        for (Food food : foods) {
-            totalCalories += food.getCalories();
-        }
     }
 
     //getters
@@ -78,7 +63,13 @@ public class Day implements Writable {
         return date;
     }
 
+    //EFFECTS: calculates and returns total calories of all food items
+    //returns zero if foods is empty
     public int getTotalCalories() {
+        int totalCalories = 0;
+        for (Food food : foods) {
+            totalCalories += food.getCalories();
+        }
         return totalCalories;
     }
 
@@ -98,6 +89,7 @@ public class Day implements Writable {
     //Effects: returns amount calorie allowance left for the day,
     //if total calories exceed the calories allowed, return 0
     public int getCaloriesLeft() {
+        int totalCalories = getTotalCalories();
         if (caloriesAllowed - totalCalories <= 0) {
             return 0;
         } else {
@@ -142,7 +134,6 @@ public class Day implements Writable {
         json.put("date", date);
         json.put("weight", weight);
         json.put("calories allowed", caloriesAllowed);
-        json.put("total calories", totalCalories);
         json.put("foods", foodsToJson());
 
         return json;

@@ -221,22 +221,20 @@ public class EntryUI extends JPanel implements ActionListener {
         }
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        Object source = e.getSource();
-        if (source == addFood) {
-            tableModel.add(createFood());
-            updateLabels();
-        } else if (source == removeFood) {
-
-        }
+    //MODIFIES: this
+    //EFFECTS: makes all textfields empty and reset ComboBox to index 0
+    private void resetFields() {
+        nameField.setText("");
+        caloriesField.setText("");
+        mealTypeField.setSelectedIndex(0);
+        notesField.setText("");
     }
 
+    //MODIFIES: this
+    //EFFECTS: updates total calories and calories left labels
     private void updateLabels() {
         totalCaloriesLabel.setText(String.valueOf(day.getTotalCalories()));
         caloriesLeftLabel.setText(String.valueOf(day.getCaloriesLeft()));
-        bottomPanel.revalidate();
-        bottomPanel.repaint();
     }
 
     //EFFECTS: Creates new food based on user input
@@ -254,5 +252,20 @@ public class EntryUI extends JPanel implements ActionListener {
         }
         return new Food(name, calories, mealType, notes);
     }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        Object source = e.getSource();
+        if (source == addFood) {
+            tableModel.add(createFood());
+            updateLabels();
+            resetFields();
+        } else if (source == removeFood) {
+
+
+        }
+    }
+
+
 }
 
