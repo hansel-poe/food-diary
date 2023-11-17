@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-//A class representing a day entry containing a list of Foods eaten that day,
-// each day entry also records the weight of the user and calories allowed at the time
-// the entry is created. It also keeps track of the total calories consumed for the day
+//A class representing a day entry containing a list of food items,
+// each day entry also records the weight of the user and calories allowed.
+// It also keeps track of the total calories consumed for the day
 public class Day implements Writable {
 
     //Fields
@@ -65,7 +65,7 @@ public class Day implements Writable {
     }
 
     //Modifies : this
-    //Effects : adds up all total calories from food in foods to get total calories
+    //Effects : adds up all total calories in each food items to get total calories
     private void updateTotalCalories() {
         totalCalories = 0; // resets total calories
         for (Food food : foods) {
@@ -90,9 +90,9 @@ public class Day implements Writable {
         return caloriesAllowed;
     }
 
-    //Effects: returns an unmodifiable list of foods
+    //EFFECTS: returns list of food items
     public List<Food> getFoods() {
-        return Collections.unmodifiableList(foods);
+        return foods;
     }
 
     //Effects: returns amount calorie allowance left for the day,
@@ -116,18 +116,24 @@ public class Day implements Writable {
     }
 
     //setters
+
+    //MODIFIES: this
+    //EFFECTS: Sets the date of day entry to value specified
     public void setDate(String date) {
         this.date = date;
     }
 
+    //MODIFIES: this
+    //EFFECTS: Sets the weight for this day entry to value specified
     public void setWeight(int weight) {
         this.weight = weight;
     }
 
+    //MODIFIES: this
+    //EFFECTS: Sets the Calories allowed to the value specified
     public void setCaloriesAllowed(int caloriesAllowed) {
         this.caloriesAllowed = caloriesAllowed;
     }
-
 
     @Override
     public JSONObject toJson() {

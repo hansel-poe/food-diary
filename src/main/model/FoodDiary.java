@@ -66,7 +66,7 @@ public class FoodDiary implements Writable {
         return user;
     }
 
-    //EFFECTs: returns the number of entries
+    //EFFECTS: returns the number of entries
     public int getNumDays() {
         return days.size();
     }
