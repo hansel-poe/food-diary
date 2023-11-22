@@ -6,6 +6,7 @@ import model.MealType;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,6 +22,7 @@ public class EntryUI extends JPanel implements ActionListener {
     private JScrollPane scrollPane;//container for the table
     private JTable entryTable;//Tables for displaying food items
     private MyTableModel tableModel;
+    private TableRowSorter tableSorter;//to sort table
     private JLabel dayName;//Represents the day name of the entry being viewed
 
     private JPanel bottomPanel;
@@ -44,7 +46,12 @@ public class EntryUI extends JPanel implements ActionListener {
         this.day = day;
         tableModel = new MyTableModel(this.day.getFoods());
 
+        tableSorter = new TableRowSorter(tableModel);
+
         entryTable = new JTable(tableModel);
+        entryTable.setFillsViewportHeight(true);
+        entryTable.setRowSorter(tableSorter);
+
         scrollPane = new JScrollPane(entryTable);
 
         totalCaloriesLabel = new JLabel(String.valueOf(day.getTotalCalories()));
@@ -125,9 +132,10 @@ public class EntryUI extends JPanel implements ActionListener {
         c.gridy = 3;
         c.gridx = 8;
         bottomPanel.add(removeFood, c);
-        ;
-        add(scrollPane, BorderLayout.CENTER);
-        add(bottomPanel, BorderLayout.CENTER);
+
+        setLayout(new GridLayout(2,1));
+        add(scrollPane);
+        add(bottomPanel);
     }
 
     private void setupAddComponents() {
@@ -212,7 +220,7 @@ public class EntryUI extends JPanel implements ActionListener {
         }
 
         //MODIFIES: this
-        //EFFECTS: removes food item from foods and update tables
+        //EFFECTS: removes food items in foods with indexes specified and updates table
         public void remove(int[] indexes) {
             List<Food> foodsToRemove = new ArrayList<>();
             for (int i : indexes) {
@@ -259,18 +267,28 @@ public class EntryUI extends JPanel implements ActionListener {
         return new Food(name, calories, mealType, notes);
     }
 
+    //EFFECTS: returns a mapping of selected rows indexes to the underlying model
+    public int[] convertIndexes(int[]selectedRows) {
+        int[] selection = entryTable.getSelectedRows();
+        for (int i = 0; i < selection.length; i++) {
+            selection[i] = entryTable.convertRowIndexToModel(selection[i]);
+        }
+        return selection;
+    }
+
     //MODIFIES: this
     //EFFECTS: listens to events from addFood and removeFood button
     @Override
     public void actionPerformed(ActionEvent e) {
+        int[] selection = convertIndexes(entryTable.getSelectedRows());
+
         Object source = e.getSource();
         if (source == addFood) {
             tableModel.add(createFood());
             updateLabels();
             resetFields();
         } else if (source == removeFood) {
-            int[]indexes = entryTable.getSelectedRows();
-            tableModel.remove(indexes);
+            tableModel.remove(selection);
             updateLabels();
         }
     }

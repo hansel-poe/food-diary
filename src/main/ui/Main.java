@@ -32,8 +32,8 @@ public class Main {
         food4 = new Food("Cookies",75,
                 MealType.DINNER, "Oatmeal");
 
-        day1.addFood(food1);
         day1.addFood(food2);
+        day1.addFood(food1);
         day1.addFood(food3);
         day1.addFood(food4);
 
