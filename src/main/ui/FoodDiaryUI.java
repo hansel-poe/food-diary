@@ -18,12 +18,12 @@ public class FoodDiaryUI extends JFrame implements ActionListener {
 
     private FoodDiary foodDiary;
 
-    //for saving progress
+    //for saving data
     private static final String JSON_STORE = "./data/FoodDiary.json";
     private JsonReader reader;
     private JsonWriter writer;
 
-    //Main screen is a tabbed pane
+    //Main screen is a tabbed pane consisting of profile page and entryUI
     private JTabbedPane mainScreen;
     private ProfileUI profilePage;
     private JTextField diaryName;

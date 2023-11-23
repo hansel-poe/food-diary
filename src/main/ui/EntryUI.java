@@ -3,6 +3,7 @@ package ui;
 import model.Day;
 import model.Food;
 import model.MealType;
+import model.exceptions.NegativeValueException;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
@@ -11,6 +12,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 //Represents a screen for managing a particular day entry, this class modifies the day entry it manages
@@ -21,11 +23,13 @@ public class EntryUI extends JPanel implements ActionListener {
 
     private JScrollPane scrollPane;//container for the table
     private JTable entryTable;//Tables for displaying food items
-    private MyTableModel tableModel;
+    private MyTableModel tableModel;//table model for managing data of table
     private TableRowSorter tableSorter;//to sort table
     private JLabel dayName;//Represents the day name of the entry being viewed
 
-    private JPanel bottomPanel;
+    private JPanel summaryPanel;
+    private JPanel newFoodPanel;
+    private JPanel buttonsPanel;
 
     private JLabel totalCaloriesLabel;
     private JLabel caloriesAllowedLabel;
@@ -45,99 +49,65 @@ public class EntryUI extends JPanel implements ActionListener {
     public EntryUI(Day day) {
         this.day = day;
         tableModel = new MyTableModel(this.day.getFoods());
-
         tableSorter = new TableRowSorter(tableModel);
-
         entryTable = new JTable(tableModel);
         entryTable.setFillsViewportHeight(true);
         entryTable.setRowSorter(tableSorter);
 
         scrollPane = new JScrollPane(entryTable);
+        setupSummaryLabels(this.day);
+        setupAddComponents();
 
+        summaryPanel = new JPanel();
+        summaryPanel.setLayout(new BoxLayout(summaryPanel, BoxLayout.LINE_AXIS));
+        summaryPanel.add(new JLabel("Total calories: "));
+        summaryPanel.add(totalCaloriesLabel);
+        summaryPanel.add(Box.createRigidArea(new Dimension(10, 0)));
+
+        summaryPanel.add(new JLabel("Calories allowed: "));
+        summaryPanel.add(caloriesAllowedLabel);
+        summaryPanel.add(Box.createRigidArea(new Dimension(10, 0)));
+
+        summaryPanel.add(new JLabel("Calorie allowance left: "));
+        summaryPanel.add(caloriesLeftLabel);
+        summaryPanel.add(Box.createRigidArea(new Dimension(10, 0)));
+
+        summaryPanel.add(new JLabel("Weight (in kg): "));
+        summaryPanel.add(weightLabel);
+        summaryPanel.add(Box.createRigidArea(new Dimension(10, 0)));
+
+        newFoodPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 7, 5));
+        newFoodPanel.add(new JLabel("Name:"));
+        newFoodPanel.add(nameField);
+        newFoodPanel.add(new JLabel("Calories:"));
+        newFoodPanel.add(caloriesField);
+        newFoodPanel.add(new JLabel("Meal type:"));
+        newFoodPanel.add(mealTypeField);
+        newFoodPanel.add(new JLabel("Notes:"));
+        newFoodPanel.add(notesField);
+
+        buttonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10,5));
+        buttonsPanel.add(addFood);
+        buttonsPanel.add(removeFood);
+
+        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+        add(scrollPane);
+        add(summaryPanel);
+        add(newFoodPanel);
+        add(buttonsPanel);
+    }
+
+    //MODIFIES: this
+    //EFFECTS: initialize all summary labels
+    private void setupSummaryLabels(Day day) {
         totalCaloriesLabel = new JLabel(String.valueOf(day.getTotalCalories()));
         caloriesAllowedLabel = new JLabel(String.valueOf(day.getCaloriesAllowed()));
         caloriesLeftLabel = new JLabel(String.valueOf(day.getCaloriesLeft()));
         weightLabel = new JLabel(String.valueOf(day.getWeight()));
-
-        setupAddComponents();
-
-        bottomPanel = new JPanel(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
-        c.insets = new Insets(2, 2, 2, 2);
-
-        c.gridy = 0;
-        c.gridx = 0;
-
-        bottomPanel.add(new JLabel("Total calories:"), c);
-
-        c.gridx = 1;
-        bottomPanel.add(totalCaloriesLabel, c);
-
-        c.gridx = 2;
-        bottomPanel.add(new JLabel("Calories allowed"), c);
-
-        c.gridx = 3;
-        bottomPanel.add(caloriesAllowedLabel, c);
-
-        c.gridx = 4;
-        bottomPanel.add(new JLabel("Calorie allowance left:"), c);
-
-        c.gridx = 5;
-        bottomPanel.add(caloriesLeftLabel, c);
-
-        c.gridx = 6;
-        bottomPanel.add(new JLabel("Weight (in kg)"), c);
-
-        c.gridx = 7;
-        bottomPanel.add(weightLabel, c);
-
-        c.gridy = 1;
-        c.gridx = 0;
-        c.gridwidth = 9;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        JSeparator separator = new JSeparator();
-        separator.setForeground(Color.CYAN);
-        bottomPanel.add(separator, c);
-        c.gridwidth = 1;
-
-        c.gridy = 2;
-        c.gridx = 0;
-        bottomPanel.add(new JLabel("Name:"), c);
-
-        c.gridx = 1;
-        bottomPanel.add(nameField, c);
-
-        c.gridx = 2;
-        bottomPanel.add(new JLabel("Calories"), c);
-
-        c.gridx = 3;
-        bottomPanel.add(caloriesField, c);
-
-        c.gridx = 4;
-        bottomPanel.add(new JLabel("Meal type:"), c);
-
-        c.gridx = 5;
-        bottomPanel.add(mealTypeField, c);
-
-        c.gridx = 6;
-        bottomPanel.add(new JLabel("Notes:"), c);
-
-        c.gridx = 7;
-        bottomPanel.add(notesField, c);
-
-        c.gridx = 8;
-        bottomPanel.add(addFood, c);
-        c.fill = GridBagConstraints.HORIZONTAL;
-
-        c.gridy = 3;
-        c.gridx = 8;
-        bottomPanel.add(removeFood, c);
-
-        setLayout(new GridLayout(2,1));
-        add(scrollPane);
-        add(bottomPanel);
     }
 
+    //MODIFIES: this
+    //EFFECTS: sets up all components to add food
     private void setupAddComponents() {
         nameField = new JTextField();
         nameField.setColumns(10);
@@ -172,7 +142,18 @@ public class EntryUI extends JPanel implements ActionListener {
         //EFFECTS: this returns the class of the column referred to by columnIndex
         @Override
         public Class<?> getColumnClass(int columnIndex) {
-            return getValueAt(0, columnIndex).getClass();
+            switch (columnIndex) {
+                case 0:
+                    return String.class;
+                case 1:
+                    return Integer.class;
+                case 2:
+                    return MealType.class;
+                case 3:
+                    return String.class;
+            }
+            return null;
+            //return getValueAt(0, columnIndex).getClass();
         }
 
         //EFFECTS: returns the number of rows
@@ -222,6 +203,8 @@ public class EntryUI extends JPanel implements ActionListener {
         //MODIFIES: this
         //EFFECTS: removes food items in foods with indexes specified and updates table
         public void remove(int[] indexes) {
+            Arrays.sort(indexes);
+
             List<Food> foodsToRemove = new ArrayList<>();
             for (int i : indexes) {
                 foodsToRemove.add(foods.get(i));
@@ -231,7 +214,7 @@ public class EntryUI extends JPanel implements ActionListener {
             for (int i : indexes) {
                 foods.remove(i);
             }*/
-            fireTableRowsDeleted(indexes[0],indexes[indexes.length - 1]);
+            fireTableRowsDeleted(indexes[0], indexes[indexes.length - 1]);
         }
     }
 
@@ -251,24 +234,24 @@ public class EntryUI extends JPanel implements ActionListener {
         caloriesLeftLabel.setText(String.valueOf(day.getCaloriesLeft()));
     }
 
-    //EFFECTS: Creates new food based on user input
-    public Food createFood() {
+    //EFFECTS: Creates new food based on user input, if input cannot be parsed, throws NumberFormatException,
+    // if calories < 0, throws NegativeValueException
+    public Food createFood() throws NumberFormatException, NegativeValueException {
         String name = nameField.getText();
-        int calories = 0;
+        int calories = Integer.parseInt(caloriesField.getText());
+        ;
         MealType mealType = (MealType) mealTypeField.getSelectedItem();
         String notes = notesField.getText();
 
-        try {
-            calories = Integer.parseInt(caloriesField.getText());
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null,
-                    "Invalid entry for calories", "Error", JOptionPane.ERROR_MESSAGE);
+        if (calories < 0) {
+            throw new NegativeValueException();
         }
         return new Food(name, calories, mealType, notes);
     }
 
-    //EFFECTS: returns a mapping of selected rows indexes to the underlying model
-    public int[] convertIndexes(int[]selectedRows) {
+    //EFFECTS: returns a mapping of selected rows indexes to the
+    //corresponding foods index
+    public int[] convertIndexes(int[] selectedRows) {
         int[] selection = entryTable.getSelectedRows();
         for (int i = 0; i < selection.length; i++) {
             selection[i] = entryTable.convertRowIndexToModel(selection[i]);
@@ -284,7 +267,15 @@ public class EntryUI extends JPanel implements ActionListener {
 
         Object source = e.getSource();
         if (source == addFood) {
-            tableModel.add(createFood());
+            try {
+                tableModel.add(createFood());
+            } catch (NumberFormatException exception) {
+                JOptionPane.showMessageDialog(null,
+                        "Invalid entry for calories", "Error", JOptionPane.ERROR_MESSAGE);
+            } catch (NegativeValueException exception) {
+                JOptionPane.showMessageDialog(null,
+                        "Calories cannot be negative", "Error", JOptionPane.ERROR_MESSAGE);
+            }
             updateLabels();
             resetFields();
         } else if (source == removeFood) {
