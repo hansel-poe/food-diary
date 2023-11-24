@@ -26,7 +26,7 @@ public class FoodDiaryUI extends JFrame implements ActionListener {
     //Main screen is a tabbed pane consisting of profile page and entryUI
     private JTabbedPane mainScreen;
     private ProfileUI profilePage;
-    private JTextField diaryName;
+    private LogUI logPage;
 
     //Menu bar items
     private JMenuBar menuBar;
@@ -35,6 +35,7 @@ public class FoodDiaryUI extends JFrame implements ActionListener {
     private JMenuItem save;
     private JMenuItem load;
 
+    @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
     public FoodDiaryUI() {
         reader = new JsonReader(JSON_STORE);
         writer = new JsonWriter(JSON_STORE);
@@ -61,44 +62,11 @@ public class FoodDiaryUI extends JFrame implements ActionListener {
         file.add(newDiary);
         file.add(save);
         file.add(load);
-
         menuBar.add(file);
         this.setJMenuBar(menuBar);
 
-        //For testing only
-     /*   Person guy = new Person();
-        guy.setName("John");
-        guy.setAge(25);
-        guy.setWeight(75);
-        guy.setHeight(183);
-        guy.setSex(Sex.MALE);
-        guy.setActivityLevel(ActivityLevel.SEDENTARY);
-
-        guy.setWeightGoal(69);
-        guy.setDietPlan(DietPlan.PLAN1);
-
-        profilePage = new ProfileUI(guy);*/
-
-
-
-       /* //creates start screen of the app
-        startScreen = new JPanel();
-        startScreen.setLayout(new BoxLayout(startScreen, BoxLayout.PAGE_AXIS));
-        startScreen.setBackground(Color.LIGHT_GRAY);
-        startScreen.setOpaque(true);
-
-        //creates main menu window
-        mainMenu = new JPanel();
-        mainMenu.setLayout(new BoxLayout(mainMenu, BoxLayout.PAGE_AXIS));
-        mainMenu.setBackground(Color.LIGHT_GRAY);
-        mainMenu.setOpaque(true);
-
-        profile = new JPanel();
-
-        addStartScreenComponents();
-        addMainMenuComponents();
-*/
         mainScreen = new JTabbedPane();
+        mainScreen.setBackground(new Color(254, 240, 229));
         this.add(mainScreen, BorderLayout.CENTER);
         this.setVisible(true);
     }
@@ -112,12 +80,17 @@ public class FoodDiaryUI extends JFrame implements ActionListener {
         foodDiary = new FoodDiary("New Diary", user); //replaces old foodDiary
 
         profilePage = new ProfileUI(user); //replaces old profile Page
+        logPage = new LogUI(foodDiary);
+        mainScreen.addTab("Log", logPage);
         mainScreen.addTab("Profile", profilePage);
+        mainScreen.setMnemonicAt(0,KeyEvent.VK_L);
+        mainScreen.setMnemonicAt(1,KeyEvent.VK_P);
 
         revalidate();
         repaint();
     }
 
+    //Handles adding
     @Override
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
@@ -143,9 +116,10 @@ public class FoodDiaryUI extends JFrame implements ActionListener {
         }
         mainScreen.removeAll();
         profilePage = new ProfileUI(foodDiary.getUser());
+        logPage = new LogUI(foodDiary);
 
-        mainScreen.addTab("Profile",profilePage);
-
+        mainScreen.addTab("Log", logPage);
+        mainScreen.addTab("Profile", profilePage);
         revalidate();
         repaint();
         JOptionPane.showMessageDialog(this,"Load successful");
@@ -167,5 +141,62 @@ public class FoodDiaryUI extends JFrame implements ActionListener {
                 "Diary successfully saved to " + JSON_STORE);
     }
 
+    //MODIFIES: this
+    //EFFECTS: Opens a new tab with selected entries , see LogUI
+    public void openEntry(Day day) {
+        String title = day.getDate();
+
+        // if tab for this day is already open then do nothing
+        if (mainScreen.indexOfTab(title) != -1) {
+            return;
+        }
+
+        EntryUI entryPage = new EntryUI(day);
+        mainScreen.addTab(title,entryPage);
+
+        int index = mainScreen.indexOfTab(title);
+        addCloseTabComponent(index, title);
+       /* revalidate();
+        repaint();*/
+    }
+
+    //adds x component to close tab
+    private void addCloseTabComponent(int index, String title) {
+        JPanel closeTab = new JPanel(new FlowLayout(FlowLayout.LEFT,3,0));
+        closeTab.setOpaque(false);
+
+        JLabel tabTitle = new JLabel(title);
+        JButton closeButton = new JButton("x"); //button to close tab
+        closeButton.setBackground(new Color(254, 240, 229));
+
+        closeTab.add(tabTitle);
+        closeTab.add(closeButton);
+
+        mainScreen.setTabComponentAt(index, closeTab);
+        closeButton.addActionListener(new MyCloseActionHandler(title));
+    }
+
+    //Handles events for clicking x at tab
+    private class MyCloseActionHandler implements ActionListener {
+        private String tabName;
+
+        public MyCloseActionHandler(String tabName) {
+            this.tabName = tabName;
+        }
+
+        public String getTabName() {
+            return tabName;
+        }
+
+        public void actionPerformed(ActionEvent evt) {
+            int index = mainScreen.indexOfTab(getTabName());
+            if (index >= 0) {
+                mainScreen.removeTabAt(index);
+                // It would probably be worthwhile getting the source
+                // casting it back to a JButton and removing
+                // the action handler reference ;)
+            }
+        }
+    }
 }
 

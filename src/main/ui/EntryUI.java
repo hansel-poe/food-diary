@@ -48,6 +48,7 @@ public class EntryUI extends JPanel implements ActionListener {
     //Button to remove food
     private JButton removeFood;
 
+    @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
     public EntryUI(Day day) {
         this.day = day;
 
@@ -260,7 +261,7 @@ public class EntryUI extends JPanel implements ActionListener {
     public Food createFood() throws NumberFormatException, NegativeValueException {
         String name = nameField.getText();
         int calories = Integer.parseInt(caloriesField.getText());
-        ;
+
         MealType mealType = (MealType) mealTypeField.getSelectedItem();
         String notes = notesField.getText();
 
@@ -272,7 +273,7 @@ public class EntryUI extends JPanel implements ActionListener {
 
     //EFFECTS: returns a mapping of selected rows indexes to the
     //corresponding foods index
-    public int[] convertIndexes(int[] selectedRows) {
+    private int[] convertIndexes(int[] selectedRows) {
         int[] selection = entryTable.getSelectedRows();
         for (int i = 0; i < selection.length; i++) {
             selection[i] = entryTable.convertRowIndexToModel(selection[i]);
@@ -291,17 +292,17 @@ public class EntryUI extends JPanel implements ActionListener {
             try {
                 tableModel.add(createFood());
             } catch (NumberFormatException exception) {
-                JOptionPane.showMessageDialog(null,
+                JOptionPane.showMessageDialog(SwingUtilities.windowForComponent(this),
                         "Invalid entry for calories", "Error", JOptionPane.ERROR_MESSAGE);
             } catch (NegativeValueException exception) {
-                JOptionPane.showMessageDialog(null,
+                JOptionPane.showMessageDialog(SwingUtilities.windowForComponent(this),
                         "Calories cannot be negative", "Error", JOptionPane.ERROR_MESSAGE);
             }
             updateLabels();
             resetFields();
         } else if (source == removeFood) {
             if (selection.length == 0) {
-                JOptionPane.showMessageDialog(null,
+                JOptionPane.showMessageDialog(SwingUtilities.windowForComponent(this),
                         "No Food selected", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }

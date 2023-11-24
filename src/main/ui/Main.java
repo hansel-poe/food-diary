@@ -19,37 +19,27 @@ public class Main {
 
         assert (myFrame.equals(root))*/;
 
-        testEntryUI();
-        /*new FoodDiaryUI();*/
+        /*testEntryUI();*/
+        /*testLogUI();*/
+        new FoodDiaryUI();
     }
 
-
-    private static void testEntryUI() {
+    //For testing purposes only
+    /*private static void testEntryUI() {
         JFrame myFrame = new JFrame();
         myFrame.setSize(500,500);
         myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        myFrame.setTitle("Entry");
+        myFrame.setTitle("EntryUI");
 
+        Day day1 = new Day("Monday Oct 20th", 60, 1000);
 
-        Day day1;
-        ;
-        Day day2;
-
-        Food food1;
-        Food food2;
-        Food food3;
-        Food food4;
-
-        day1 = new Day("Monday Oct 20th", 60, 1000);
-
-
-        food1 = new Food("Apple", 50,
+        Food food1 = new Food("Apple", 50,
                 MealType.BREAKFAST, "The apple is sweet");
-        food2 = new Food("Chicken", 100,
+        Food food2 = new Food("Chicken", 100,
                 MealType.LUNCH, "Grilled with salt");
-        food3 = new Food("Cookies", 120,
+        Food food3 = new Food("Cookies", 120,
                 MealType.SNACK, "Chocolate chip");
-        food4 = new Food("Cookies",75,
+        Food food4 = new Food("Cookies",75,
                 MealType.DINNER, "Oatmeal");
 
         day1.addFood(food2);
@@ -61,4 +51,40 @@ public class Main {
         myFrame.pack();
         myFrame.setVisible(true);
     }
+
+    private static void testLogUI() {
+        JFrame myFrame = new JFrame();
+        myFrame.setSize(500,500);
+        myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        myFrame.setTitle("LogUI");
+
+        Person hansel = new Person();
+        hansel.setCalorieAllowance(900);
+        hansel.setWeight(60);
+
+        FoodDiary foodDiary = new FoodDiary("Hansel's Diary",hansel);
+
+        Day day1 = new Day("Monday Oct 20th", 65, 1000);
+        Day day2 = new Day("Tuesday oct 21st", 64,1000);
+
+        Food food1 = new Food("Apple", 50,
+                MealType.BREAKFAST, "The apple is sweet");
+        Food food2 = new Food("Chicken", 100,
+                MealType.LUNCH, "Grilled with salt");
+        Food food3 = new Food("Cookies", 120,
+                MealType.SNACK, "Chocolate chip");
+        Food food4 = new Food("Cookies",75,
+                MealType.DINNER, "Oatmeal");
+
+        day1.addFood(food2);
+        day1.addFood(food1);
+        day2.addFood(food3);
+        day2.addFood(food4);
+        foodDiary.addDay(day1);
+        foodDiary.addDay(day2);
+
+        myFrame.add(new LogUI(foodDiary));
+        myFrame.pack();
+        myFrame.setVisible(true);
+    }*/
 }

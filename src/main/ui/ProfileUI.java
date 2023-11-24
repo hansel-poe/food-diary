@@ -64,6 +64,7 @@ public class ProfileUI extends JPanel implements PropertyChangeListener, ActionL
     private JButton edit;
     private JButton reset;
 
+    @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
     public ProfileUI(Person user) {
         this.user = user;
         cc = new CalorieCalculator();
@@ -188,12 +189,15 @@ public class ProfileUI extends JPanel implements PropertyChangeListener, ActionL
     private void setupButtons() {
         set = new JButton("Set");
         set.addActionListener(this);
+        set.setBackground(new Color(254, 240, 229));
 
         edit = new JButton("Edit");
         edit.addActionListener(this);
+        edit.setBackground((new Color(254, 240, 229)));
 
         reset = new JButton("Reset");
         reset.addActionListener(this);
+        reset.setBackground(new Color(254, 240, 229));
 
         GridLayout gridLayout = new GridLayout(1, 3);
         gridLayout.setHgap(10);
@@ -209,20 +213,24 @@ public class ProfileUI extends JPanel implements PropertyChangeListener, ActionL
     //EFFECTS: Sets up ComboBoxes
     private void setupComboBoxes() {
         activityList = new JComboBox(ActivityLevel.values());
+        activityList.setBackground(new Color(254, 240, 229));
         activityList.setSelectedItem(activityLevel);
         activityList.addActionListener(this);
 
         planList = new JComboBox(DietPlan.values());
+        planList.setBackground(new Color(254, 240, 229));
         planList.setSelectedItem(dietPlan);
         planList.addActionListener(this);
 
         sexList = new JComboBox(Sex.values());
+        sexList.setBackground(new Color(254, 240, 229));
         sexList.setSelectedItem(sex);
         sexList.addActionListener(this);
     }
 
     //MODIFIES: this
     //EFFECTS: Sets up text fields
+    @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
     private void setupTextFields() {
         nameField = new JTextField(15);
         nameField.setText(name);
