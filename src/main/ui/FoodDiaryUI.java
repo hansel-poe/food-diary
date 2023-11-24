@@ -28,6 +28,10 @@ public class FoodDiaryUI extends JFrame implements ActionListener {
     private ProfileUI profilePage;
     private LogUI logPage;
 
+    //Icons for tabs
+    private ImageIcon logIcon;
+    private ImageIcon profileIcon;
+
     //Menu bar items
     private JMenuBar menuBar;
     private JMenu file;
@@ -67,6 +71,16 @@ public class FoodDiaryUI extends JFrame implements ActionListener {
 
         mainScreen = new JTabbedPane();
         mainScreen.setBackground(new Color(254, 240, 229));
+
+        //creates icons for the log and profile tabs
+        logIcon = new ImageIcon("data/icons8-diary-60.png");
+        Image logImage = logIcon.getImage().getScaledInstance(32,32, Image.SCALE_SMOOTH);
+        logIcon = new ImageIcon(logImage);
+
+        profileIcon = new ImageIcon("data/icons8-user-64.png");
+        Image profileImage = profileIcon.getImage().getScaledInstance(32,32,Image.SCALE_SMOOTH);
+        profileIcon = new ImageIcon(profileImage);
+
         this.add(mainScreen, BorderLayout.CENTER);
         this.setVisible(true);
     }
@@ -81,10 +95,10 @@ public class FoodDiaryUI extends JFrame implements ActionListener {
 
         profilePage = new ProfileUI(user); //replaces old profile Page
         logPage = new LogUI(foodDiary);
-        mainScreen.addTab("Log", logPage);
-        mainScreen.addTab("Profile", profilePage);
-        mainScreen.setMnemonicAt(0,KeyEvent.VK_L);
-        mainScreen.setMnemonicAt(1,KeyEvent.VK_P);
+        mainScreen.addTab("Log", logIcon, logPage);
+        mainScreen.addTab("Profile", profileIcon, profilePage);
+        mainScreen.setMnemonicAt(0, KeyEvent.VK_L);
+        mainScreen.setMnemonicAt(1, KeyEvent.VK_P);
 
         revalidate();
         repaint();
@@ -118,11 +132,11 @@ public class FoodDiaryUI extends JFrame implements ActionListener {
         profilePage = new ProfileUI(foodDiary.getUser());
         logPage = new LogUI(foodDiary);
 
-        mainScreen.addTab("Log", logPage);
-        mainScreen.addTab("Profile", profilePage);
+        mainScreen.addTab("Log",logIcon, logPage);
+        mainScreen.addTab("Profile",profileIcon, profilePage);
         revalidate();
         repaint();
-        JOptionPane.showMessageDialog(this,"Load successful");
+        JOptionPane.showMessageDialog(this, "Load successful");
     }
 
     //MODIFIES: this
@@ -152,7 +166,7 @@ public class FoodDiaryUI extends JFrame implements ActionListener {
         }
 
         EntryUI entryPage = new EntryUI(day);
-        mainScreen.addTab(title,entryPage);
+        mainScreen.addTab(title, entryPage);
 
         int index = mainScreen.indexOfTab(title);
         addCloseTabComponent(index, title);
@@ -162,7 +176,7 @@ public class FoodDiaryUI extends JFrame implements ActionListener {
 
     //adds x component to close tab
     private void addCloseTabComponent(int index, String title) {
-        JPanel closeTab = new JPanel(new FlowLayout(FlowLayout.LEFT,3,0));
+        JPanel closeTab = new JPanel(new FlowLayout(FlowLayout.LEFT, 3, 0));
         closeTab.setOpaque(false);
 
         JLabel tabTitle = new JLabel(title);
