@@ -20,17 +20,19 @@ import java.util.List;
 public class EntryUI extends JPanel implements ActionListener {
 
     Day day;//represents the day entry this gui manages
+    private JPanel entryPanel;//to contain the title and table
+    private JLabel dayNameLabel;//Represents title
 
     private JScrollPane scrollPane;//container for the table
     private JTable entryTable;//Tables for displaying food items
     private MyTableModel tableModel;//table model for managing data of table
     private TableRowSorter tableSorter;//to sort table
-    private JLabel dayName;//Represents the day name of the entry being viewed
 
-    private JPanel summaryPanel;
-    private JPanel newFoodPanel;
-    private JPanel buttonsPanel;
+    private JPanel summaryPanel;// shows summary of food
+    private JPanel newFoodPanel;// fields for user to provide input
+    private JPanel buttonsPanel;//buttons for adding and removing food
 
+    //summary labels
     private JLabel totalCaloriesLabel;
     private JLabel caloriesAllowedLabel;
     private JLabel caloriesLeftLabel;
@@ -48,16 +50,29 @@ public class EntryUI extends JPanel implements ActionListener {
 
     public EntryUI(Day day) {
         this.day = day;
+
+        //creates table of food items and add it to scroll pane
         tableModel = new MyTableModel(this.day.getFoods());
         tableSorter = new TableRowSorter(tableModel);
         entryTable = new JTable(tableModel);
         entryTable.setFillsViewportHeight(true);
         entryTable.setRowSorter(tableSorter);
-
         scrollPane = new JScrollPane(entryTable);
+
+        //creates panels containing title and table
+        entryPanel = new JPanel();
+        entryPanel.setLayout(new BoxLayout(entryPanel,BoxLayout.PAGE_AXIS));
+        dayNameLabel = new JLabel(this.day.getDate());
+        dayNameLabel.setFont(new Font("Arial",Font.PLAIN,15));
+        entryPanel.add(dayNameLabel);
+        entryPanel.add(Box.createRigidArea(new Dimension(0,7)));
+        entryPanel.add(scrollPane);
+        entryPanel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+
         setupSummaryLabels(this.day);
         setupAddComponents();
 
+        //creates panels containing summaries of day entry
         summaryPanel = new JPanel();
         summaryPanel.setLayout(new BoxLayout(summaryPanel, BoxLayout.LINE_AXIS));
         summaryPanel.add(new JLabel("Total calories: "));
@@ -74,9 +89,11 @@ public class EntryUI extends JPanel implements ActionListener {
 
         summaryPanel.add(new JLabel("Weight (in kg): "));
         summaryPanel.add(weightLabel);
-        summaryPanel.add(Box.createRigidArea(new Dimension(10, 0)));
+        summaryPanel.add(Box.createHorizontalGlue()); //eats up any remaining horizontal space
+        summaryPanel.setBorder(BorderFactory.createEmptyBorder(0,10,10,10));
 
-        newFoodPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 7, 5));
+        //sets up pane for user to enter new Food information
+        newFoodPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 5));
         newFoodPanel.add(new JLabel("Name:"));
         newFoodPanel.add(nameField);
         newFoodPanel.add(new JLabel("Calories:"));
@@ -86,12 +103,13 @@ public class EntryUI extends JPanel implements ActionListener {
         newFoodPanel.add(new JLabel("Notes:"));
         newFoodPanel.add(notesField);
 
-        buttonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10,5));
+        //sets up panel for buttons
+        buttonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 5));
         buttonsPanel.add(addFood);
         buttonsPanel.add(removeFood);
 
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-        add(scrollPane);
+        add(entryPanel);
         add(summaryPanel);
         add(newFoodPanel);
         add(buttonsPanel);
@@ -116,15 +134,18 @@ public class EntryUI extends JPanel implements ActionListener {
         caloriesField.setColumns(10);
 
         mealTypeField = new JComboBox(MealType.values());
+        mealTypeField.setBackground(new Color(254, 240, 229));
         mealTypeField.setSelectedIndex(0);
 
         notesField = new JTextField();
         notesField.setColumns(10);
 
         addFood = new JButton("Add food");
+        addFood.setBackground(new Color(254, 240, 229));
         addFood.addActionListener(this);
 
         removeFood = new JButton("Remove food");
+        removeFood.setBackground(new Color(254, 240, 229));
         removeFood.addActionListener(this);
     }
 
@@ -279,6 +300,11 @@ public class EntryUI extends JPanel implements ActionListener {
             updateLabels();
             resetFields();
         } else if (source == removeFood) {
+            if (selection.length == 0) {
+                JOptionPane.showMessageDialog(null,
+                        "No Food selected", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
             tableModel.remove(selection);
             updateLabels();
         }

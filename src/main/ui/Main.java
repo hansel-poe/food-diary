@@ -6,13 +6,33 @@ import javax.swing.*;
 
 public class Main {
     public static void main(String[] args) {
+/*
+        JFrame myFrame = new JFrame();
+        JPanel panel1 = new JPanel();
+        JTabbedPane tabbedPane = new JTabbedPane();
+        tabbedPane.addTab("Panel1", panel1);
+        myFrame.add(tabbedPane);
+
+        Object parent = panel1.getParent();
+        Object root = SwingUtilities.windowForComponent(panel1);
+        myFrame.add(panel1);
+
+        assert (myFrame.equals(root))*/;
+
+        testEntryUI();
+        /*new FoodDiaryUI();*/
+    }
+
+
+    private static void testEntryUI() {
         JFrame myFrame = new JFrame();
         myFrame.setSize(500,500);
         myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         myFrame.setTitle("Entry");
 
 
-        Day day1;;
+        Day day1;
+        ;
         Day day2;
 
         Food food1;
@@ -38,7 +58,7 @@ public class Main {
         day1.addFood(food4);
 
         myFrame.add(new EntryUI(day1));
+        myFrame.pack();
         myFrame.setVisible(true);
-        /*new FoodDiaryUI();*/
     }
 }
