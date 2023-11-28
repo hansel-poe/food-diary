@@ -1,72 +1,25 @@
 {
     "name": "New Diary",
-    "days": [
-        {
-            "date": "Monday",
-            "foods": [
-                {
-                    "notes": "",
-                    "name": "Apple",
-                    "calories": 50,
-                    "meal type": "BREAKFAST"
-                },
-                {
-                    "notes": "Mcdonalds",
-                    "name": "Fries",
-                    "calories": 450,
-                    "meal type": "LUNCH"
-                }
-            ],
-            "weight": 0,
-            "calories allowed": 0
-        },
-        {
-            "date": "Tuesday",
-            "foods": [
-                {
-                    "notes": "Subway",
-                    "name": "Sandwich",
-                    "calories": 500,
-                    "meal type": "BREAKFAST"
-                },
-                {
-                    "notes": "Skippys",
-                    "name": "Peanut Butter and Jelly ",
-                    "calories": 120,
-                    "meal type": "SNACK"
-                }
-            ],
-            "weight": 0,
-            "calories allowed": 0
-        },
-        {
-            "date": "Wednesday",
-            "foods": [],
-            "weight": 0,
-            "calories allowed": 0
-        },
-        {
-            "date": "Thursday",
-            "foods": [],
-            "weight": 0,
-            "calories allowed": 0
-        },
-        {
-            "date": "Friday",
-            "foods": [],
-            "weight": 65,
-            "calories allowed": 1442
-        }
-    ],
+    "days": [{
+        "date": "Monday ",
+        "foods": [{
+            "notes": "Subway",
+            "name": "Sandwich",
+            "calories": 230,
+            "meal type": "LUNCH"
+        }],
+        "weight": 0,
+        "calories allowed": 0
+    }],
     "user": {
         "activity level": "SEDENTARY",
-        "diet plan": "PLAN2",
+        "diet plan": "PLAN1",
         "sex": "MALE",
-        "calorie allowance": 1442,
-        "name": "Hansel",
-        "weight": 65,
-        "weight goal": 60,
-        "age": 30,
-        "height": 178
+        "calorie allowance": 0,
+        "name": "",
+        "weight": 0,
+        "weight goal": 0,
+        "age": 0,
+        "height": 0
     }
 }

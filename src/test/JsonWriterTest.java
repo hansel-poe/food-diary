@@ -172,10 +172,8 @@ public class JsonWriterTest {
     }
 
     private void testFoodEntriesDay1(Day testDay) {
-        List<Food> testFoods = testDay.getFoods();
-
-        Food testFood1 = testFoods.get(0);
-        Food testFood2 = testFoods.get(1);
+        Food testFood1 = testDay.getFood(0);
+        Food testFood2 = testDay.getFood(1);
 
         assertEquals("Apple", testFood1.getName());
         assertEquals(50, testFood1.getCalories());
@@ -189,10 +187,9 @@ public class JsonWriterTest {
     }
 
     private void testFoodEntriesDay2(Day testDay) {
-        List<Food> testFoods = testDay.getFoods();
 
-        Food testFood1 = testFoods.get(0);
-        Food testFood2 = testFoods.get(1);
+        Food testFood1 = testDay.getFood(0);
+        Food testFood2 = testDay.getFood(1);
 
         assertEquals("Cookies", testFood1.getName());
         assertEquals(120, testFood1.getCalories());

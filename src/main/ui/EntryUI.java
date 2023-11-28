@@ -53,7 +53,7 @@ public class EntryUI extends JPanel implements ActionListener {
         this.day = day;
 
         //creates table of food items and add it to scroll pane
-        tableModel = new MyTableModel(this.day.getFoods());
+        tableModel = new MyTableModel(this.day);
         tableSorter = new TableRowSorter(tableModel);
         entryTable = new JTable(tableModel);
         entryTable.setFillsViewportHeight(true);
@@ -153,12 +153,13 @@ public class EntryUI extends JPanel implements ActionListener {
     //Custom table model to display food items in day entry, note that
     // this class can modify the food list in the day entry
     private class MyTableModel extends AbstractTableModel {
+        Day day;// the day that contains the list of foods displayed in the table
         private String[] columnNames = {"Food", "Calories", "Meal Type", "Notes"};//columns of the table,
         // each displaying a particular data of food
-        private List<Food> foods;//each food represents one row data
 
-        public MyTableModel(List<Food> foods) {
-            this.foods = foods;
+        //EFFECTS: creates tableModel with datas of food contained in day
+        public MyTableModel(Day day) {
+            this.day = day;
         }
 
         //EFFECTS: this returns the class of the column referred to by columnIndex
@@ -181,7 +182,7 @@ public class EntryUI extends JPanel implements ActionListener {
         //EFFECTS: returns the number of rows
         @Override
         public int getRowCount() {
-            return foods.size();
+            return day.getNumFoods();
         }
 
         //EFFECTS: returns the number of columns
@@ -194,7 +195,7 @@ public class EntryUI extends JPanel implements ActionListener {
         //returns null if any one indexes are out of bounds
         @Override
         public Object getValueAt(int rowIndex, int columnIndex) {
-            Food food = foods.get(rowIndex);
+            Food food = day.getFood(rowIndex);
             switch (columnIndex) {
                 case 0:
                     return food.getName();
@@ -217,8 +218,8 @@ public class EntryUI extends JPanel implements ActionListener {
         //MODIFIES: this
         //EFFECTS: adds a new food item to list of foods and updates table
         public void add(Food food) {
-            foods.add(food);
-            int row = foods.indexOf(food);
+            day.addFood(food);
+            int row = day.indexOf(food);
             fireTableRowsInserted(row, row);
         }
 
@@ -229,9 +230,9 @@ public class EntryUI extends JPanel implements ActionListener {
 
             List<Food> foodsToRemove = new ArrayList<>();
             for (int i : indexes) {
-                foodsToRemove.add(foods.get(i));
+                foodsToRemove.add(day.getFood(i));
             }
-            foods.removeAll(foodsToRemove);
+            day.removeAll(foodsToRemove);
           /*  //doesnt work
             for (int i : indexes) {
                 foods.remove(i);
@@ -272,7 +273,7 @@ public class EntryUI extends JPanel implements ActionListener {
     }
 
     //EFFECTS: returns a mapping of selected rows indexes to the
-    //corresponding foods index
+    //corresponding indexes in the model
     private int[] convertIndexes(int[] selectedRows) {
         int[] selection = entryTable.getSelectedRows();
         for (int i = 0; i < selection.length; i++) {

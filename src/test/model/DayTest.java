@@ -3,6 +3,7 @@ package model;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -37,8 +38,7 @@ public class DayTest {
         assertEquals(0, day2.getWeight());
         assertEquals(0, day2.getCaloriesAllowed());
         assertEquals(0, day2.getTotalCalories());
-        List<Food> foods = day2.getFoods();
-        assertTrue(foods.isEmpty());
+        assertTrue(day1.isEmpty());
     }
 
     @Test
@@ -47,8 +47,7 @@ public class DayTest {
         assertEquals(60, day1.getWeight());
         assertEquals(1000, day1.getCaloriesAllowed());
         assertEquals(0, day1.getTotalCalories());
-        List<Food> foods = day1.getFoods();
-        assertTrue(foods.isEmpty());
+        assertTrue(day1.isEmpty());
     }
 
     @Test
@@ -58,31 +57,59 @@ public class DayTest {
         day1.addFood(food3);
         day1.addFood(food4);
 
-        List<Food> foods = day1.getFoods();
-        assertEquals(4, foods.size());
+        assertEquals(4, day1.getNumFoods());
 
-        assertEquals(50,foods.get(0).getCalories());
-        assertEquals(100,foods.get(1).getCalories());
-        assertEquals(120, foods.get(2).getCalories());
-        assertEquals(75, foods.get(3).getCalories());
+        assertTrue(day1.contains(food1));
+        assertTrue(day1.contains(food2));
+        assertTrue(day1.contains(food3));
+        assertTrue(day1.contains(food4));
 
-        assertEquals("Apple",foods.get(0).getName());
-        assertEquals("Chicken",foods.get(1).getName());
-        assertEquals("Cookies",foods.get(2).getName());
-        assertEquals("Cookies",foods.get(3).getName());
+        assertEquals(50, day1.getFood(0).getCalories());
+        assertEquals(100, day1.getFood(1).getCalories());
+        assertEquals(120, day1.getFood(2).getCalories());
+        assertEquals(75, day1.getFood(3).getCalories());
 
-        assertEquals(MealType.BREAKFAST,foods.get(0).getMealType());
-        assertEquals(MealType.LUNCH,foods.get(1).getMealType());
-        assertEquals(MealType.SNACK,foods.get(2).getMealType());
-        assertEquals(MealType.DINNER,foods.get(3).getMealType());
+        assertEquals("Apple",day1.getFood(0).getName());
+        assertEquals("Chicken",day1.getFood(1).getName());
+        assertEquals("Cookies",day1.getFood(2).getName());
+        assertEquals("Cookies",day1.getFood(3).getName());
 
-        assertEquals("The apple is sweet",foods.get(0).getNotes());
-        assertEquals("Grilled with salt",foods.get(1).getNotes());
-        assertEquals("Chocolate chip",foods.get(2).getNotes());
-        assertEquals("Oatmeal",foods.get(3).getNotes());
+        assertEquals(MealType.BREAKFAST,day1.getFood(0).getMealType());
+        assertEquals(MealType.LUNCH,day1.getFood(1).getMealType());
+        assertEquals(MealType.SNACK,day1.getFood(2).getMealType());
+        assertEquals(MealType.DINNER,day1.getFood(3).getMealType());
+
+        assertEquals("The apple is sweet",day1.getFood(0).getNotes());
+        assertEquals("Grilled with salt",day1.getFood(1).getNotes());
+        assertEquals("Chocolate chip",day1.getFood(2).getNotes());
+        assertEquals("Oatmeal",day1.getFood(3).getNotes());
     }
 
     @Test
+    void testRemoveAll() {
+        day1.addFood(food1);
+        day1.addFood(food3);
+        day1.addFood(food4);
+
+        assertEquals(3, day1.getNumFoods());
+
+        List<Food> foodsToRemove = new ArrayList<>();
+        foodsToRemove.add(food1);
+        foodsToRemove.add(food3);
+
+        day1.removeAll(foodsToRemove);
+
+        assertEquals(1, day1.getNumFoods());
+        assertTrue(day1.contains(food4));
+
+        foodsToRemove.add(food2); // not in day1 no change expected
+        day1.removeAll(foodsToRemove);
+
+        assertEquals(1, day1.getNumFoods());
+        assertTrue(day1.contains(food4));
+    }
+
+   /* @Test
     void testRemoveFood(){
         day1.addFood(food1);
         day1.addFood(food3);
@@ -95,9 +122,9 @@ public class DayTest {
         List<Food> foods = day1.getFoods();
         assertEquals("Cookies", foods.get(1).getName());
         assertEquals("Chocolate chip", foods.get(1).getNotes());
-    }
+    }*/
 
-    @Test
+    /*@Test
     void testRemoveFoodMany(){
         day1.addFood(food1);
         day1.addFood(food3);
@@ -111,30 +138,45 @@ public class DayTest {
         day1.removeFood("Apple", MealType.BREAKFAST);
 
         assertEquals(0, day1.getNumFoods());
-    }
+    }*/
 
     @Test
-    void testRemoveFoodNotFound() {
+    void testRemoveFood() {
         day1.addFood(food1);
         day1.addFood(food3);
         day1.addFood(food4);
 
-        day1.removeFood("Cookies", MealType.BREAKFAST );
         assertEquals(3, day1.getNumFoods());
 
-        day1.removeFood("French fries",MealType.DINNER);
-        assertEquals(3, day1.getNumFoods());
+        day1.removeFood(food1);
+        assertEquals(2, day1.getNumFoods());
+        assertFalse(day1.contains(food1));
+        assertTrue(day1.contains(food3));
+        assertTrue(day1.contains(food4));
+
+        day1.removeFood(food2);// not in day1, no change is expected
+        assertEquals(2, day1.getNumFoods());
+        assertTrue(day1.contains(food3));
+        assertTrue(day1.contains(food4));
+
+        day1.removeFood(food3);
+        assertEquals(1, day1.getNumFoods());
+        assertFalse(day1.contains(food3));
+        assertTrue(day1.contains(food4));
+
+        day1.removeFood(food4);
+        assertTrue(day1.isEmpty());
     }
 
     @Test
-    void testUpdateTotalCalories(){
+    void testGetTotalCalories(){
         day1.addFood(food1);
         day1.addFood(food2);
         day1.addFood(food3);
 
-        assertEquals(270, day1.getTotalCalories() );
+        assertEquals(270, day1.getTotalCalories());
 
-        day1.removeFood("Apple", MealType.BREAKFAST);
+        day1.removeFood(food1);
         assertEquals(220, day1.getTotalCalories());
     }
 
@@ -146,7 +188,7 @@ public class DayTest {
 
         assertEquals(730,day1.getCaloriesLeft());
 
-        day1.removeFood("Apple", MealType.BREAKFAST);
+        day1.removeFood(food1);
 
         assertEquals(780, day1.getCaloriesLeft());
     }

@@ -165,8 +165,7 @@ public class FoodDiaryApp {
     private void printBreakfast(Day day) {
         System.out.println("Breakfast:");
 
-        List<Food> foods = day.getFoods();
-        for (Food food : foods) {
+        for (Food food : day) {
             if (food.getMealType() == MealType.BREAKFAST) {
                 System.out.println(food);
             }
@@ -176,8 +175,7 @@ public class FoodDiaryApp {
     private void printLunch(Day day) {
         System.out.println("Lunch:");
 
-        List<Food> foods = day.getFoods();
-        for (Food food : foods) {
+        for (Food food : day) {
             if (food.getMealType() == MealType.LUNCH) {
                 System.out.println(food.toString());
             }
@@ -187,8 +185,7 @@ public class FoodDiaryApp {
     private void printDinner(Day day) {
         System.out.println("Dinner:");
 
-        List<Food> foods = day.getFoods();
-        for (Food food : foods) {
+        for (Food food : day) {
             if (food.getMealType() == MealType.DINNER) {
                 System.out.println(food.toString());
             }
@@ -197,9 +194,8 @@ public class FoodDiaryApp {
 
     private void printSnack(Day day) {
         System.out.println("Snack:");
-        List<Food> foods = day.getFoods();
 
-        for (Food food : foods) {
+        for (Food food : day) {
             if (food.getMealType() == MealType.SNACK) {
                 System.out.println(food.toString());
             }
