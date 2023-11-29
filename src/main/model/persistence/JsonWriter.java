@@ -1,5 +1,7 @@
 package model.persistence;
 
+import model.Event;
+import model.EventLog;
 import model.FoodDiary;
 import org.json.JSONObject;
 
@@ -29,6 +31,7 @@ public class JsonWriter {
     public void write(FoodDiary foodDiary) {
         JSONObject json = foodDiary.toJson();
         output.print(json.toString(TAB));
+        EventLog.getInstance().logEvent(new Event(foodDiary.getName() + " is saved to " + fileName));
     }
 
     //Modifies: this

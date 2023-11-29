@@ -178,7 +178,7 @@ public class ProfileUI extends JPanel implements PropertyChangeListener, ActionL
         heightLabel = new JLabel("Height (in cm):");
         sexLabel = new JLabel("Sex:");
         activityLevelLabel = new JLabel("Activity Level:");
-        weightGoalLabel = new JLabel("Weight goal (in kg):");
+        weightGoalLabel = new JLabel("Weight goal (in Kg):");
         dietPlanLabel = new JLabel("Diet plan:");
         caloriesAllowedLabel = new JLabel("Daily calorie allowance:");
         goalLengthLabel = new JLabel("Days to reach goal: ");

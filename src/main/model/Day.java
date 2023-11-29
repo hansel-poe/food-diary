@@ -45,6 +45,7 @@ public class Day implements Writable, Iterable<Food> {
     //EFFECTS: adds a food item to the list of foods in the day
     public void addFood(Food food) {
         foods.add(food);
+        EventLog.getInstance().logEvent(new Event(food.toString() + " is added to " + getDate()));
     }
 
     //I have decided to remove this method and replace it with the one that accepts a Food param
@@ -63,15 +64,17 @@ public class Day implements Writable, Iterable<Food> {
 
     //MODIFIES: this
     //EFFECTS: Removes food from day, if food is in day
-                //if not then no changes are made
+    //if not then no changes are made
     public void removeFood(Food food) {
         foods.remove(food);
+        EventLog.getInstance().logEvent(new Event(food + "is removed from " + getDate()));
     }
 
     //MODIFIES: this
     //EFFECTS: removes all the foods in foodsToRemove from day
     public void removeAll(Collection<Food> foodsToRemove) {
         foods.removeAll(foodsToRemove);
+        EventLog.getInstance().logEvent(new Event(foodsToRemove + " is removed from " + getDate()));
     }
 
     //EFFECTS: returns the food corresponding to index, IndexOutOfBoundsExcpetion will be thrown if index >
@@ -151,6 +154,13 @@ public class Day implements Writable, Iterable<Food> {
     //EFFECTS: Sets the Calories allowed to the value specified
     public void setCaloriesAllowed(int caloriesAllowed) {
         this.caloriesAllowed = caloriesAllowed;
+    }
+
+    //EFFECTS: returns a string representation of this day
+    @Override
+    public String toString() {
+        return "[" + getDate() + ", Weight: " + getWeight() + ", Cal Allowed: "
+                + getCaloriesAllowed() + ", Total Calories: " + getTotalCalories() + "]";
     }
 
     //EFFECTS: Returns a JSON object for this day object

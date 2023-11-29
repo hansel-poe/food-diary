@@ -1,25 +1,33 @@
 {
-    "name": "New Diary",
-    "days": [{
-        "date": "Monday ",
-        "foods": [{
-            "notes": "Subway",
-            "name": "Sandwich",
-            "calories": 230,
-            "meal type": "LUNCH"
-        }],
-        "weight": 0,
-        "calories allowed": 0
-    }],
+    "name": "Hansel's Diary",
+    "days": [
+        {
+            "date": "Nov 30th",
+            "foods": [],
+            "weight": 65,
+            "calories allowed": 1502
+        },
+        {
+            "date": "Dec 1st",
+            "foods": [{
+                "notes": "",
+                "name": "Beans",
+                "calories": 100,
+                "meal type": "BREAKFAST"
+            }],
+            "weight": 65,
+            "calories allowed": 1502
+        }
+    ],
     "user": {
         "activity level": "SEDENTARY",
-        "diet plan": "PLAN1",
+        "diet plan": "PLAN2",
         "sex": "MALE",
-        "calorie allowance": 0,
-        "name": "",
-        "weight": 0,
-        "weight goal": 0,
-        "age": 0,
-        "height": 0
+        "calorie allowance": 1502,
+        "name": "Hansel",
+        "weight": 65,
+        "weight goal": 60,
+        "age": 20,
+        "height": 178
     }
 }

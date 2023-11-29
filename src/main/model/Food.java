@@ -9,7 +9,7 @@ public class Food implements Writable {
     private String name; //name of food
     private int calories; //How much calories this food contains
     private MealType mealType; //the type of meal this food belongs to,
-                               //see MealType Enum for more info
+    //see MealType Enum for more info
     private String notes; //User notes on this particular food item
 
     //Default constructor, creates a food item with empty name,

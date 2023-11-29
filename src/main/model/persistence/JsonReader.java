@@ -24,6 +24,7 @@ public class JsonReader {
     public FoodDiary read() throws IOException {
         String jsonData = readFile(targetFile);
         JSONObject jsonDiary = new JSONObject(jsonData);
+        EventLog.getInstance().logEvent(new Event(jsonDiary.getString("name") + " loaded from " + targetFile));
         return parseFoodDiary(jsonDiary);
     }
 

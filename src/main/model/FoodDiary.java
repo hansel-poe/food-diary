@@ -40,12 +40,14 @@ public class FoodDiary implements Writable, Iterable<Day> {
     //EFFECTS: adds day to food diary
     public void addDay(Day day) {
         days.add(day);
+        EventLog.getInstance().logEvent(new Event(day + " is added to " + getName()));
     }
 
     //MODIFIES: this
     //EFFECTS: removes entries in daysToRemove from diary
     public void removeDays(Collection<Day> daysToRemove) {
         days.removeAll(daysToRemove);
+        EventLog.getInstance().logEvent(new Event(daysToRemove + " is removed from " + getName()));
     }
 
     //REQUIRES : user is not null
@@ -97,7 +99,7 @@ public class FoodDiary implements Writable, Iterable<Day> {
     //EFFECTS: sets the name of the food diary
     public void setName(String name) {
         this.name = name;
-        EventLog.getInstance().logEvent(new Event("Food Diary name changed to " + getName()));
+        EventLog.getInstance().logEvent(new Event("Food Diary name is changed to " + getName()));
     }
 
     //EFFECTS: returns a json object of this Food Diary
@@ -105,7 +107,7 @@ public class FoodDiary implements Writable, Iterable<Day> {
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
         json.put("name", name);
-        json.put("user",user.toJson());
+        json.put("user", user.toJson());
         json.put("days", daysToJson());
         return json;
     }

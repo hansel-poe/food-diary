@@ -21,8 +21,8 @@ public class Main {
 
         /*testEntryUI();*/
         /*testLogUI();*/
-        /*new FoodDiaryUI();*/
-        new FoodDiaryApp();
+        new FoodDiaryUI();
+        /*new FoodDiaryApp();*/
     }
 
     //For testing purposes only

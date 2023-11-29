@@ -115,6 +115,7 @@ public class Person implements Writable {
     //Effefcts: set name
     public void setName(String name) {
         this.name = name;
+        EventLog.getInstance().logEvent(new Event("Profile name is set to " + getName()));
     }
 
     //Requires: sex is not null
@@ -122,6 +123,7 @@ public class Person implements Writable {
     //Effects: set sex
     public void setSex(Sex sex) {
         this.sex = sex;
+        EventLog.getInstance().logEvent(new Event("Profile sex is set to " + getSex()));
     }
 
     //Requires: age > 0
@@ -129,6 +131,7 @@ public class Person implements Writable {
     //Effects: set age
     public void setAge(int age) {
         this.age = age;
+        EventLog.getInstance().logEvent(new Event("Profile age is set to " + getAge()));
     }
 
     //Requires: weight > 0
@@ -136,6 +139,7 @@ public class Person implements Writable {
     //Effects: set weight
     public void setWeight(int weight) {
         this.weight = weight;
+        EventLog.getInstance().logEvent(new Event("Profile weight is set to " + getWeight()));
     }
 
     //Requires: height > 0
@@ -143,6 +147,7 @@ public class Person implements Writable {
     //Effects: set height
     public void setHeight(int height) {
         this.height = height;
+        EventLog.getInstance().logEvent(new Event("Profile height is set to " + getHeight()));
     }
 
     //Requires: calorieAllowance > 0
@@ -150,12 +155,14 @@ public class Person implements Writable {
     //Effects: set the daily calorie allowance
     public void setCalorieAllowance(int calorieAllowance) {
         this.calorieAllowance = calorieAllowance;
+        EventLog.getInstance().logEvent(new Event("Profile calorie allowance is set to " + getCalorieAllowance()));
     }
 
     //
     //Modifies : this
     public void setWeightGoal(int weightGoal) {
         this.weightGoal = weightGoal;
+        EventLog.getInstance().logEvent(new Event("Profile weight goal is set to " + getWeightGoal()));
     }
 
     //Requires: activityLevel is not null
@@ -163,6 +170,7 @@ public class Person implements Writable {
     //Effects: sets the activity level for this person
     public void setActivityLevel(ActivityLevel activityLevel) {
         this.activityLevel = activityLevel;
+        EventLog.getInstance().logEvent(new Event("Profile activity level is set to " + getActivityLevel()));
     }
 
     //Requires: choice is not null
@@ -170,6 +178,7 @@ public class Person implements Writable {
     //Effects : sets the diet plan
     public void setDietPlan(DietPlan choice) {
         this.dietPlan = choice;
+        EventLog.getInstance().logEvent(new Event("Profile diet plan is set to " + getDietPlan()));
     }
 
     @Override

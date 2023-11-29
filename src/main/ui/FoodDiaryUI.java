@@ -6,12 +6,11 @@ import model.persistence.JsonWriter;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+//This is the main ui for food diary app
 public class FoodDiaryUI extends JFrame implements ActionListener {
     private static final int WIDTH = 500;
     private static final int HEIGHT = 500;
@@ -49,6 +48,7 @@ public class FoodDiaryUI extends JFrame implements ActionListener {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
         setSize(WIDTH, HEIGHT);
+        addWindowListener(new CloseWindowListener());
 
         //creates menuBar for saving and loading
         menuBar = new JMenuBar();
