@@ -40,7 +40,7 @@ public class LogUI extends JPanel implements ActionListener {
     public LogUI(FoodDiary foodDiary) {
         this.foodDiary = foodDiary;
         //creates table of entries
-        tableModel = new EntriesTableModel(this.foodDiary.getDays());
+        tableModel = new EntriesTableModel(this.foodDiary);
         tableSorter = new TableRowSorter(tableModel);
         entriesTable = new JTable(tableModel);
         entriesTable.setFillsViewportHeight(true);
@@ -90,18 +90,18 @@ public class LogUI extends JPanel implements ActionListener {
 
     //Class representing the model for the table displaying all the entries in the diary
     private class EntriesTableModel extends AbstractTableModel {
-        private List<Day> entries;
+        private FoodDiary foodDiary; //the food diary that contains the entries displayed in this table
         private String[] columnNames = {"Date", "Weight", "Total Calories", "Calories Allowed"};
 
-        //EFFECTS: constructs new Table model with List of day entries
-        EntriesTableModel(List<Day> entries) {
-            this.entries = entries;
+        //EFFECTS: constructs new Table model with food diary set
+        EntriesTableModel(FoodDiary foodDiary) {
+            this.foodDiary = foodDiary;
         }
 
         //EFFECTS: returns number of entries
         @Override
         public int getRowCount() {
-            return entries.size();
+            return foodDiary.getNumDays();
         }
 
         //EFFECTS: returns size of columns
@@ -115,7 +115,7 @@ public class LogUI extends JPanel implements ActionListener {
         //columnIndex corresponds to the particular field of day
         @Override
         public Object getValueAt(int rowIndex, int columnIndex) {
-            Day day = entries.get(rowIndex);
+            Day day = foodDiary.getDay(rowIndex);
             switch (columnIndex) {
                 case 0:
                     return day.getDate();
@@ -154,8 +154,8 @@ public class LogUI extends JPanel implements ActionListener {
         //MODIFIES: this
         //EFFECTS: adds a new day entry to the list of entries
         public void add(Day newEntry) {
-            entries.add(newEntry);
-            int row = entries.indexOf(newEntry);
+            foodDiary.addDay(newEntry);
+            int row = foodDiary.indexOf(newEntry);
             fireTableRowsInserted(row, row);
         }
 
@@ -166,15 +166,15 @@ public class LogUI extends JPanel implements ActionListener {
 
             List<Day> daysToRemove = new ArrayList<>();
             for (int i : indexes) {
-                daysToRemove.add(entries.get(i));
+                daysToRemove.add(foodDiary.getDay(i));
             }
-            entries.removeAll(daysToRemove);
+            foodDiary.removeDays(daysToRemove);
             fireTableRowsDeleted(indexes[0], indexes[indexes.length - 1]);
         }
 
         //EFFECTS : returns day entry according to index
         public Day get(int index) {
-            return entries.get(index);
+            return foodDiary.getDay(index);
         }
     }
 

@@ -139,11 +139,10 @@ public class FoodDiaryApp {
     }
 
     private void printEntry() {
-        List<Day> entries = foodDiary.getDays();
-        System.out.println("You have " + entries.size() + " entries");
+        System.out.println("You have " + foodDiary.getNumDays() + " entries");
         System.out.println("Your entries :\n");
 
-        for (Day day : entries) {
+        for (Day day : foodDiary) {
             printDay(day);
         }
         System.out.println("\n End of entries");

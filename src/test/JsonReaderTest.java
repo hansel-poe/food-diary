@@ -61,10 +61,8 @@ public class JsonReaderTest {
     private void testDiaryEntries(FoodDiary testDiary) {
         assertEquals(2, testDiary.getNumDays());
 
-        List<Day> testDays = testDiary.getDays();
-
-        Day testDay1 = testDays.get(0);
-        Day testDay2 = testDays.get(1);
+        Day testDay1 = testDiary.getDay(0);
+        Day testDay2 = testDiary.getDay(1);
 
         assertEquals("Monday Oct 20th", testDay1.getDate());
         assertEquals(60, testDay1.getWeight());
