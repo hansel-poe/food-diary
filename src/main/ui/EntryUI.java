@@ -25,7 +25,7 @@ public class EntryUI extends JPanel implements ActionListener {
 
     private JScrollPane scrollPane;//container for the table
     private JTable entryTable;//Tables for displaying food items
-    private MyTableModel tableModel;//table model for managing data of table
+    private FoodTableModel tableModel;//table model for managing data of table
     private TableRowSorter tableSorter;//to sort table
 
     private JPanel summaryPanel;// shows summary of food
@@ -53,7 +53,7 @@ public class EntryUI extends JPanel implements ActionListener {
         this.day = day;
 
         //creates table of food items and add it to scroll pane
-        tableModel = new MyTableModel(this.day);
+        tableModel = new FoodTableModel(this.day);
         tableSorter = new TableRowSorter(tableModel);
         entryTable = new JTable(tableModel);
         entryTable.setFillsViewportHeight(true);
@@ -152,13 +152,13 @@ public class EntryUI extends JPanel implements ActionListener {
 
     //Custom table model to display food items in day entry, note that
     // this class can modify the food list in the day entry
-    private class MyTableModel extends AbstractTableModel {
+    private class FoodTableModel extends AbstractTableModel {
         Day day;// the day that contains the list of foods displayed in the table
         private String[] columnNames = {"Food", "Calories", "Meal Type", "Notes"};//columns of the table,
         // each displaying a particular data of food
 
         //EFFECTS: creates tableModel with datas of food contained in day
-        public MyTableModel(Day day) {
+        public FoodTableModel(Day day) {
             this.day = day;
         }
 

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+//DEPRECATED, NOT INCLUDED IN UML DIAGRAM
 public class FoodDiaryApp {
 
     //Save file destination

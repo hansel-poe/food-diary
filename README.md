@@ -40,7 +40,7 @@ entered values. The number of days to reach your goal is also given.
 8. There is currently no food in the list, you can add some.<sup>1</sup>. Notice that the total calories of food updates (in the log page too!) and the calories allowed left also updates.
 9. You can also select food items (use shift or ctrl to select multiple) and remove them<sup>2</sup> . the total calories and calorie allowance left will update.
 10. Finally, you can sort items by clicking on the column headers<sup>2</sup> (order for meal type is Breakfast, Lunch, Dinner and then snack and calories will be sorted from highest/lowest).
-10. Click on the X at the tab to close the tab for the entry.<sup>2</sup>
+10. Click on the X at the tab to close the tab for the entry.
 11. Experiment! try adding and removing<sup>2</sup>  entries and adding food items to entries (You can open multiple entries in the app, but each entry can only have one tab opened).
 12. I tried to design an attractive UI. notice there is a theme of light pink in the buttons, combo boxes, tabs (I think they're super cute). There are icons at the top of the log and profile tabs<sup>3</sup>.  
 13. Finally, when you're done logging in your food Diary, click on file > save on the menu bar to save your program. <sup>4</sup> 
@@ -52,3 +52,100 @@ notes:
 3. visual component 
 4. saving 
 5. loading 
+
+### Phase 4: Task 2
+Log: <br>
+Thu Nov 30 10:46:17 PST 2023 <br>
+Profile name is set to Hansel <br>
+Thu Nov 30 10:46:17 PST 2023 <br>
+Profile age is set to 20 <br>
+Thu Nov 30 10:46:17 PST 2023 <br>
+Profile weight is set to 65 <br>
+Thu Nov 30 10:46:17 PST 2023 <br>
+Profile height is set to 178 <br>
+Thu Nov 30 10:46:17 PST 2023 <br>
+Profile sex is set to MALE <br>
+Thu Nov 30 10:46:17 PST 2023 <br>
+Profile activity level is set to SEDENTARY <br>
+Thu Nov 30 10:46:17 PST 2023 <br>
+Profile weight goal is set to 60 <br>
+Thu Nov 30 10:46:17 PST 2023 <br>
+Profile diet plan is set to PLAN2, Lose 0.5 kg per week <br>
+Thu Nov 30 10:46:17 PST 2023 <br>
+Profile calorie allowance is set to 1502 <br>
+Thu Nov 30 10:46:27 PST 2023 <br>
+Food Diary name is changed to Hansel's Diary <br>
+Thu Nov 30 10:46:37 PST 2023 <br>
+[Nov 30 2023, Weight: 65, Cal Allowed: 1502, Total Calories: 0] is added to Hansel's Diary <br>
+Thu Nov 30 10:46:58 PST 2023 <br>
+[Apple , 50 cal, Gala apples] is added to Nov 30 2023 <br>
+Thu Nov 30 10:47:12 PST 2023 <br>
+[Steaks, 500 cal, Ribeye] is added to Nov 30 2023 <br>
+Thu Nov 30 10:47:25 PST 2023 <br>
+[Sandwich, 230 cal, Subway] is added to Nov 30 2023 <br>
+Thu Nov 30 10:47:46 PST 2023 <br>
+[Rat Poison, 50 cal, Deadly] is added to Nov 30 2023 <br>
+Thu Nov 30 10:48:19 PST 2023 <br>
+[Cyanide, 20 cal, Accidentally ingested] is added to Nov 30 2023 <br>
+Thu Nov 30 10:48:27 PST 2023 <br>
+[[Rat Poison, 50 cal, Deadly], [Cyanide, 20 cal, Accidentally ingested]] is removed from Nov 30 2023 <br>
+Thu Nov 30 10:48:58 PST 2023 <br>
+[Dec 1 2023, Weight: 65, Cal Allowed: 1502, Total Calories: 0] is added to Hansel's Diary <br>
+Thu Nov 30 10:49:11 PST 2023 <br>
+[Nov 31 2023, Weight: 65, Cal Allowed: 1502, Total Calories: 0] is added to Hansel's Diary <br>
+Thu Nov 30 10:49:18 PST 2023 <br>
+[Nov 32 2023, Weight: 65, Cal Allowed: 1502, Total Calories: 0] is added to Hansel's Diary <br>
+Thu Nov 30 10:49:24 PST 2023 <br>
+[[Nov 31 2023, Weight: 65, Cal Allowed: 1502, Total Calories: 0], [Nov 32 2023, Weight: 65, Cal Allowed: 1502, Total Calories: 0]] is removed from Hansel's Diary <br>
+Thu Nov 30 10:49:30 PST 2023 <br>
+Hansel's Diary is saved to ./data/FoodDiary.json <br>
+Thu Nov 30 10:49:38 PST 2023 <br>
+Hansel's Diary loaded from ./data/FoodDiary.json <br>
+Thu Nov 30 10:49:38 PST 2023 <br>
+Profile name is set to Hansel <br>
+Thu Nov 30 10:49:38 PST 2023 <br>
+Profile sex is set to MALE <br>
+Thu Nov 30 10:49:38 PST 2023 <br>
+Profile age is set to 20 <br>
+Thu Nov 30 10:49:38 PST 2023 <br>
+Profile weight is set to 65 <br>
+Thu Nov 30 10:49:38 PST 2023 <br>
+Profile height is set to 178 <br>
+Thu Nov 30 10:49:38 PST 2023<br>
+Profile calorie allowance is set to 1502 <br>
+Thu Nov 30 10:49:38 PST 2023 <br>
+Profile weight goal is set to 60 <br>
+Thu Nov 30 10:49:38 PST 2023 <br>
+Profile activity level is set to SEDENTARY <br>
+Thu Nov 30 10:49:38 PST 2023 <br>
+Profile diet plan is set to PLAN2, Lose 0.5 kg per week <br>
+Thu Nov 30 10:49:38 PST 2023 <br>
+[Apple , 50 cal, Gala apples] is added to Nov 30 2023 <br>
+Thu Nov 30 10:49:38 PST 2023 <br>
+[Steaks, 500 cal, Ribeye] is added to Nov 30 2023 <br>
+Thu Nov 30 10:49:38 PST 2023 <br>
+[Sandwich, 230 cal, Subway] is added to Nov 30 2023 <br>
+Thu Nov 30 10:49:38 PST 2023 <br>
+[Nov 30 2023, Weight: 65, Cal Allowed: 1502, Total Calories: 780] is added to Hansel's Diary <br>
+Thu Nov 30 10:49:38 PST 2023 <br>
+[Dec 1 2023, Weight: 65, Cal Allowed: 1502, Total Calories: 0] is added to Hansel's Diary <br>
+
+Logging is done when these actions are performed:
+- When the diary name is changed
+- When a food item is added to a day entry
+- When a food item is removed from a day entry
+- When a day entry is added to the diary
+- When a day entry is removed from the diary
+- When the profile is changed
+- When the diary is saved 
+- When the diary is loaded
+
+### Phase 4: Task 3
+- There's too much coupling in CalorieCalculator. It would be better if we eliminate  <br> 
+the association profileUI and FoodDiary have with CalorieCalculator and instead have Person <br>
+contain a field of CalorieCalculator and an update method that uses CalorieCalculator to calculate <br>
+- new calorie allowance and update the field.
+- FoodTableModel and EntriesTableModel needs to have a field of type Day and FoodDiary respectively, <br>
+as they need to parse and modify the contents of Foods in Day and Days in FoodDiary. Similarly, EntryUI <br>
+needs to contain a few information about day and LogUI needs to contain a few information about FoodDiary,<br>
+therefore these associations cannot be removed.
